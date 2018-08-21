@@ -8,10 +8,7 @@
     "build": "webpack -p"
   },
   "files": [
-    "dist/",
-    "README",
-    "LICENSE",
-    "package.json"
+    "dist/"
   ],
   "repository": {
     "type": "git",
