@@ -2,10 +2,17 @@
   "name": "@transferwise/formatting",
   "version": "0.1.0",
   "description": "A library for formatting things, like dates and currencies and the like.",
-  "main": "index.js",
+  "main": "./dist/formatting.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p"
   },
+  "files": [
+    "dist/",
+    "README",
+    "LICENSE",
+    "package.json"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/transferwise/formatting.git"
@@ -22,5 +29,13 @@
   "bugs": {
     "url": "https://github.com/transferwise/formatting/issues"
   },
-  "homepage": "https://github.com/transferwise/formatting#readme"
+  "homepage": "https://github.com/transferwise/formatting#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-loader": "^8.0.0-beta.4",
+    "webpack": "^4.17.0",
+    "webpack-cli": "^3.1.0"
+  }
 }
