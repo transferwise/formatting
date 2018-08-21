@@ -4,7 +4,8 @@
   "description": "A library for formatting things, like dates and currencies and the like.",
   "main": "./dist/formatting.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "webpack -p"
   },
   "files": [
@@ -31,7 +32,10 @@
     "@babel/core": "^7.0.0-rc.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-rc.1",
     "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.0-beta.4",
+    "jest": "^23.5.0",
     "webpack": "^4.17.0",
     "webpack-cli": "^3.1.0"
   }
