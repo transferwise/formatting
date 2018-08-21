@@ -21,7 +21,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/formatting
+          at: .
       - run:
           name: Test
           command: npm test
@@ -29,18 +29,16 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/formatting
+          at: .
       - run:
           name: Setup npm token
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
-      - attach_workspace:
-          at: .
       - run:
           name: Build
           command: npm run build
       - run:
           name: Release to GitHub
-          command:
+          command: |
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
