@@ -36,7 +36,7 @@ describe('Currency formatting', () => {
     expect(formatAmount(123.4, 'not existent', 'en-GB')).toBe('123.40');
   });
 
-  it('formats money the same way as it formats currency, but with the currency code added', () => {
+  it('formats money the same way as it formats amounts, but with the currency code added', () => {
     expect(formatMoney(1234.5, 'gbp')).toBe('1,234.50 GBP');
   });
 
