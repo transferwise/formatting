@@ -2,13 +2,13 @@
 
 ## Usage
 
-### Currency formatting
+### Amount formatting
 
 ```javascript
-import { formatCurrency } from '@transferwise/formatting';
+import { formatAmount } from '@transferwise/formatting';
 
-console.log(formatCurrency(123.45, 'EUR', 'en-GB' /* Optional, defaults to en-GB */));
-// --> '123.45'
+console.log(formatAmount(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB */));
+// --> '1,234.56'
 ```
 
 ### Money formatting
@@ -16,8 +16,8 @@ console.log(formatCurrency(123.45, 'EUR', 'en-GB' /* Optional, defaults to en-GB
 ```javascript
 import { formatMoney } from '@transferwise/formatting';
 
-console.log(formatMoney(123.45, 'EUR', 'en-GB' /* Optional, defaults to en-GB */));
-// --> '123.45 EUR'
+console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB */));
+// --> '1,234.56 EUR'
 ```
 
 ## Developing

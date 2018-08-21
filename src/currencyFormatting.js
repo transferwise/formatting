@@ -47,7 +47,7 @@ function getCurrencyDecimals(currency = '') {
   return DEFAULT_CURRENCY_DECIMALS;
 }
 
-export function formatCurrency(amount, currencyCode, locale = 'en-GB') {
+export function formatAmount(amount, currencyCode, locale = 'en-GB') {
   const precision = getCurrencyDecimals(currencyCode);
   if (!isNumberLocaleSupported()) {
     return amount.toFixed(precision);
@@ -60,5 +60,5 @@ export function formatCurrency(amount, currencyCode, locale = 'en-GB') {
 }
 
 export function formatMoney(amount, currencyCode, locale = 'en-GB') {
-  return `${formatCurrency(amount, currencyCode, locale)} ${(currencyCode || '').toUpperCase()}`;
+  return `${formatAmount(amount, currencyCode, locale)} ${(currencyCode || '').toUpperCase()}`;
 }
