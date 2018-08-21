@@ -4,8 +4,11 @@
   "description": "A library for formatting things, like dates and currencies and the like.",
   "main": "./dist/formatting.js",
   "scripts": {
-    "test": "jest",
+    "test": "npm run lint && npm run check-format && jest",
     "test:watch": "jest --watch",
+    "lint": "eslint src",
+    "check-format": "prettier-eslint \"src/**/*.js\" --list-different",
+    "format": "prettier-eslint \"src/**/*.js\" --write",
     "build": "webpack -p"
   },
   "files": [
@@ -35,7 +38,14 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.0-beta.4",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^2.6.2",
     "jest": "^23.5.0",
+    "prettier": "^1.14.2",
+    "prettier-eslint-cli": "^4.7.1",
     "webpack": "^4.17.0",
     "webpack-cli": "^3.1.0"
   }
