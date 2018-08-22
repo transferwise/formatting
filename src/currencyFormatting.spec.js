@@ -48,6 +48,10 @@ describe('Currency formatting', () => {
     expect(formatAmount(-1234.5, 'gbp')).toBe('- 1,234.50');
   });
 
+  it('formats amounts with no decimals without decimals', () => {
+    expect(formatAmount(1234, 'gbp')).toBe('1,234');
+  });
+
   it('formats money the same way as it formats amounts, but with the currency code added', () => {
     expect(formatMoney(1234.5, 'gbp')).toBe('1,234.50 GBP');
   });
