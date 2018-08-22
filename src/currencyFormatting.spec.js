@@ -2,8 +2,16 @@ describe('Currency formatting', () => {
   let formatAmount;
   let formatMoney;
 
+  let originalAbsoluteFunction;
+
   beforeEach(() => {
     reloadFormatting(); // As the module saves state, need to reload the module.
+    originalAbsoluteFunction = Math.abs;
+    Math.abs = jest.fn(num => (num.isFake ? num : originalAbsoluteFunction(num)));
+  });
+
+  afterEach(() => {
+    Math.abs = originalAbsoluteFunction;
   });
 
   it('uses toLocaleString to format if it is supported', () => {
@@ -36,6 +44,10 @@ describe('Currency formatting', () => {
     expect(formatAmount(123.4, 'not existent', 'en-GB')).toBe('123.40');
   });
 
+  it('displays negative amounts with a space between the minus and the amount', () => {
+    expect(formatAmount(-1234.5, 'gbp')).toBe('- 1,234.50');
+  });
+
   it('formats money the same way as it formats amounts, but with the currency code added', () => {
     expect(formatMoney(1234.5, 'gbp')).toBe('1,234.50 GBP');
   });
@@ -52,6 +64,8 @@ describe('Currency formatting', () => {
 
   function fakeNumber() {
     return {
+      isFake: true,
+
       toLocaleString(locale, options) {
         return `formatted for ${locale} and options ${JSON.stringify(options)}`;
       },

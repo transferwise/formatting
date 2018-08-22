@@ -49,14 +49,17 @@ function getCurrencyDecimals(currency = '') {
 
 export function formatAmount(amount, currencyCode, locale = 'en-GB') {
   const precision = getCurrencyDecimals(currencyCode);
-  if (!isNumberLocaleSupported()) {
-    return amount.toFixed(precision);
-  }
+  const isNegative = amount < 0;
+  const absoluteAmount = Math.abs(amount);
 
-  return amount.toLocaleString(locale, {
-    minimumFractionDigits: precision,
-    maximumFractionDigits: precision,
-  });
+  const formattedAbsoluteAmount = isNumberLocaleSupported()
+    ? absoluteAmount.toLocaleString(locale, {
+        minimumFractionDigits: precision,
+        maximumFractionDigits: precision,
+      })
+    : absoluteAmount.toFixed(precision);
+
+  return isNegative ? `- ${formattedAbsoluteAmount}` : formattedAbsoluteAmount;
 }
 
 export function formatMoney(amount, currencyCode, locale = 'en-GB') {
