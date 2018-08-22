@@ -25,6 +25,18 @@ jobs:
       - run:
           name: Test
           command: npm test
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build the project
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
   release:
     <<: *defaults
     steps:
@@ -33,9 +45,6 @@ jobs:
       - run:
           name: Setup npm token
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
-      - run:
-          name: Build
-          command: npm run build
       - run:
           name: Release to GitHub
           command: |
@@ -53,9 +62,12 @@ workflows:
   build-test-and-release:
     jobs:
       - dependencies
-      - test:
+      - build:
           requires:
             - dependencies
+      - test:
+          requires:
+            - build
       - release:
           context: frontend-publish
           requires:
