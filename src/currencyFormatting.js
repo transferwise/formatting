@@ -47,8 +47,19 @@ function getCurrencyDecimals(currency = '') {
   return DEFAULT_CURRENCY_DECIMALS;
 }
 
+function amountHasNoDecimals(amount) {
+  return amount % 1 === 0;
+}
+
+function getPrecision(amount, currencyCode) {
+  if (amountHasNoDecimals(amount)) {
+    return 0;
+  }
+  return getCurrencyDecimals(currencyCode);
+}
+
 export function formatAmount(amount, currencyCode, locale = 'en-GB') {
-  const precision = getCurrencyDecimals(currencyCode);
+  const precision = getPrecision(amount, currencyCode);
   const isNegative = amount < 0;
   const absoluteAmount = Math.abs(amount);
 

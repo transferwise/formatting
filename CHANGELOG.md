@@ -1,3 +1,16 @@
+# v1.0.2
+## Formatting amounts with no decimals without decimals
+
+Before:
+```js
+formatAmount(1234, 'gbp') // 1,234.00
+```
+
+After:
+```js
+formatAmount(1234, 'gbp') // 1,234
+```
+
 # v1.0.1
 ## Number formatting and SSR fixes
 
