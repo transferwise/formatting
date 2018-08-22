@@ -1,3 +1,15 @@
+# v1.1.0
+## Formatting rates
+
+```javascript
+import { formatRate } from '@transferwise/formatting';
+
+console.log(formatRate(1.23456789));
+// --> '1.23457'
+console.log(formatRate(1.23));
+// --> '1.23000'
+```
+
 # v1.0.2
 ## Formatting amounts with no decimals without decimals
 
