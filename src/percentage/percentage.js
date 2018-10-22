@@ -1,3 +1,3 @@
 export function formatPercentage(value) {
-  return `${value.toFixed(4) * 100}%`;
+  return `${parseFloat(value.toFixed(4)) * 100}%`;
 }
