@@ -38,7 +38,9 @@ import { formatPercentage } from '@transferwise/formatting';
 
 console.log(formatPercentage(0.23456789));
 // --> '23.46%'
-console.log(formatPercentage(0.23));
+console.log(formatPercentage(0.2340));
+// --> '23.4%'
+console.log(formatPercentage(0.2300));
 // --> '23%'
 ```
 
