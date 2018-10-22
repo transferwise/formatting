@@ -31,6 +31,17 @@ console.log(formatRate(1.23));
 // --> '1.23000'
 ```
 
+### Percentage formatting
+
+```javascript
+import { formatPercentage } from '@transferwise/formatting';
+
+console.log(formatPercentage(0.23456789));
+// --> '23.46%'
+console.log(formatPercentage(0.23));
+// --> '23%'
+```
+
 ## Developing
 
 As usual, `npm install` to install dependencies.
