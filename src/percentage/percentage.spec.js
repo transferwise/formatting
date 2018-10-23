@@ -9,7 +9,7 @@ describe('Percentage formatting', () => {
     expect(formatPercentage(0.231)).toBe('23.1%');
   });
 
-  it('formats percentage with two decimals', () => {
+  it('formats percentage with two or more decimals', () => {
     expect(formatPercentage(0.2304)).toBe('23.04%');
   });
 
