@@ -1,3 +1,17 @@
+# v1.2.0
+## Formatting percentages
+
+```javascript
+import { formatPercentage } from '@transferwise/formatting';
+
+console.log(formatPercentage(0.23456789));
+// --> '23.46%'
+console.log(formatPercentage(0.2340));
+// --> '23.4%'
+console.log(formatPercentage(0.2300));
+// --> '23%'
+```
+
 # v1.1.0
 ## Formatting rates
 
