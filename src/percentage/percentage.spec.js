@@ -5,6 +5,10 @@ describe('Percentage formatting', () => {
     expect(formatPercentage(0.23)).toBe('23%');
   });
 
+  it('formats floating point number properly', () => {
+    expect(formatPercentage(0.0035)).toBe('0.35%');
+  });
+
   it('formats percentage with one decimal', () => {
     expect(formatPercentage(0.231)).toBe('23.1%');
   });
