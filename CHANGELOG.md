@@ -1,3 +1,6 @@
+# v1.2.1
+## Fix floating numbers percentage
+
 # v1.2.0
 ## Formatting percentages
 
