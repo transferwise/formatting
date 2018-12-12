@@ -1,7 +1,7 @@
 import { getFallbackFormat } from '.';
 
 describe('Date format fallback', () => {
-  const date = new Date(Date.UTC(2018, 11, 1));
+  let date = new Date(Date.UTC(2018, 11, 1));
 
   it('formats DMY by default', () => {
     const opts = { timeZone: 'UTC' };
@@ -54,7 +54,7 @@ describe('Date format fallback', () => {
   });
 
   it('works for non-UTC dates', () => {
-    const date = new Date('2018-12-01');
+    date = new Date('2018-12-01');
     const expectedOutput = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     expect(getFallbackFormat(date)).toBe(expectedOutput);
   });
