@@ -1,3 +1,19 @@
+# v1.3.0
+## Formatting dates
+
+```javascript
+import { formatDate } from '@transferwise/formatting';
+
+const date = new Date(Date.UTC(2018, 11, 1));
+
+console.log(formatDate(date, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '01/12/2018'
+console.log(formatDate(date, 'en-GB', { weekday: 'short' }));
+// --> 'Sat'
+console.log(formatDate(date, 'en-GB', { month: 'long', year: 'numeric' }));
+// --> 'December 2018'
+```
+
 # v1.2.1
 ## Fix floating numbers percentage
 

@@ -44,6 +44,26 @@ console.log(formatPercentage(0.2300));
 // --> '23%'
 ```
 
+### Date formatting
+
+```javascript
+import { formatDate } from '@transferwise/formatting';
+
+const date = new Date(Date.UTC(2018, 11, 1));
+
+console.log(formatDate(date, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '01/12/2018'
+console.log(formatDate(date, 'en-GB', { weekday: 'short' }));
+// --> 'Sat'
+console.log(formatDate(date, 'en-GB', { month: 'long', year: 'numeric' }));
+// --> 'December 2018'
+```
+It's basically a wrapper for `Date.toLocaleDateString`, so you can pass in the same [parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString#Parameters).
+Only difference is that `timeZone` is set to `UTC` by default, to disable it go for:
+```javascript
+console.log(formatDate(date, 'en-GB', { isUTC: false }));
+```
+
 ## Developing
 
 As usual, `npm install` to install dependencies.
