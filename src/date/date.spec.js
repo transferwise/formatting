@@ -16,17 +16,12 @@ describe('Date formatting', () => {
 
     it('should call toLocaleDateString with default params', () => {
       expect(formatDate(date)).toBe('trolo');
-      expect(date.toLocaleDateString).lastCalledWith('en-GB', { timeZone: 'UTC' });
+      expect(date.toLocaleDateString).lastCalledWith('en-GB', {});
     });
 
     it('should pass given params to toLocaleDateString', () => {
       formatDate(date, 'et', { whatever: true });
-      expect(date.toLocaleDateString).lastCalledWith('et', { timeZone: 'UTC', whatever: true });
-    });
-
-    it('should not include timeZone parameter when isUTC is set to false', () => {
-      formatDate(date, 'et', { isUTC: false });
-      expect(date.toLocaleDateString).lastCalledWith('et', {});
+      expect(date.toLocaleDateString).lastCalledWith('et', { whatever: true });
     });
   });
 
@@ -38,7 +33,7 @@ describe('Date formatting', () => {
 
     it('should use default locale', () => {
       formatDate(date, 'my-awesome-locale');
-      expect(date.toLocaleDateString).lastCalledWith('en-GB', { timeZone: 'UTC' });
+      expect(date.toLocaleDateString).lastCalledWith('en-GB', {});
     });
   });
 
@@ -49,7 +44,7 @@ describe('Date formatting', () => {
 
     it('should call fallback method', () => {
       expect(formatDate(date)).toBe('lolo');
-      expect(fallback.getFallbackFormat).lastCalledWith(date, { timeZone: 'UTC' });
+      expect(fallback.getFallbackFormat).lastCalledWith(date, {});
     });
   });
 });
