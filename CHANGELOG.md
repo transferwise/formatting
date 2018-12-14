@@ -1,3 +1,6 @@
+# v1.3.1
+## Date default timezone not UTC
+
 # v1.3.0
 ## Formatting dates
 
