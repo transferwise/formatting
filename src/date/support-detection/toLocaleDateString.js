@@ -21,7 +21,7 @@ function toLocaleDateStringSupportsLocales() {
 }
 
 function toLocaleDateStringReturnsCorrectValue() {
-  const date = new Date('2018-12-01');
-  const dateString = date.toLocaleDateString('en-GB', { timeZone: 'UTC' });
+  const date = new Date(2018, 11, 1);
+  const dateString = date.toLocaleDateString('en-GB');
   return dateString === '01/12/2018';
 }
