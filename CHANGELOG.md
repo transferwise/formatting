@@ -1,3 +1,6 @@
+# v1.3.2
+## Date formatting performance improvements
+
 # v1.3.1
 ## Date default timezone not UTC
 

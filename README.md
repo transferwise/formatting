@@ -58,7 +58,12 @@ console.log(formatDate(date, 'en-GB', { weekday: 'short' }));
 console.log(formatDate(date, 'en-GB', { month: 'long', year: 'numeric' }));
 // --> 'December 2018'
 ```
-It's basically a wrapper for `Date.toLocaleDateString`, so you can pass in the same [parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString#Parameters).
+For third parameter pass in the same [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat#Parameters) as for `Intl.DateTimeFormat` and for best performance use the same object (pass in reference), for example:
+```javascript
+const options = { weekday: 'short' };
+formatDate(new Date(), 'en-GB', options);
+formatDate(new Date(), 'en-GB', options);
+```
 
 ## Developing
 
