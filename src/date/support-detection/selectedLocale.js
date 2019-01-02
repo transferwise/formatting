@@ -1,17 +1,16 @@
-const supportedLocales = { 'en-GB': true }; // cache
+const supportedLocales = {}; // cache
 
 export function isSelectedLocaleSupported(locale) {
   if (supportedLocales[locale] === undefined) {
-    supportedLocales[locale] = !toLocaleDateStringFails(locale);
+    supportedLocales[locale] = checkForLocaleSupport(locale);
   }
   return supportedLocales[locale];
 }
 
-function toLocaleDateStringFails(locale) {
+function checkForLocaleSupport(locale) {
   try {
-    new Date().toLocaleDateString(locale);
+    return Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
+  } catch (e) {
     return false;
-  } catch (error) {
-    return true;
   }
 }

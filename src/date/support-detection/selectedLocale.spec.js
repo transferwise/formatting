@@ -1,29 +1,28 @@
 import { isSelectedLocaleSupported } from '.';
 
 describe('Selected locale support detection', () => {
-  let originaltoLocaleDateString;
+  let originalSupportedLocalesOf;
+  let supportedLocalesOf;
 
   beforeEach(() => {
-    // eslint-disable-next-line no-extend-native
-    originaltoLocaleDateString = Date.prototype.toLocaleDateString;
-    // eslint-disable-next-line no-extend-native
-    Date.prototype.toLocaleDateString = jest.fn().mockReturnValue(true);
+    originalSupportedLocalesOf = Intl.DateTimeFormat.supportedLocalesOf;
+    supportedLocalesOf = jest.fn().mockReturnValue(['trololo']);
+    Intl.DateTimeFormat.supportedLocalesOf = supportedLocalesOf;
   });
 
   afterEach(() => {
-    // eslint-disable-next-line no-extend-native
-    Date.prototype.toLocaleDateString = originaltoLocaleDateString;
+    Intl.DateTimeFormat.supportedLocalesOf = originalSupportedLocalesOf;
   });
 
-  it('tries to use given locale on toLocaleDateString', () => {
+  it('calls Intl.DateTimeFormat.supportedLocalesOf', () => {
     expect(isSelectedLocaleSupported('et')).toBe(true);
-    expect(Date.prototype.toLocaleDateString).lastCalledWith('et');
-    expect(Date.prototype.toLocaleDateString.mock.calls.length).toBe(1);
+    expect(supportedLocalesOf).toHaveBeenCalledTimes(1);
+    expect(supportedLocalesOf).lastCalledWith(['et']);
   });
 
   it('caches the result', () => {
     isSelectedLocaleSupported('xx-XX');
     isSelectedLocaleSupported('xx-XX');
-    expect(Date.prototype.toLocaleDateString.mock.calls.length).toBe(1);
+    expect(supportedLocalesOf).toHaveBeenCalledTimes(1);
   });
 });
