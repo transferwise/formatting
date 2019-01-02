@@ -58,9 +58,9 @@ console.log(formatDate(date, 'en-GB', { weekday: 'short' }));
 console.log(formatDate(date, 'en-GB', { month: 'long', year: 'numeric' }));
 // --> 'December 2018'
 ```
-Pass in the same [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat#Parameters) as for `Intl.DateTimeFormat`.
+For third parameter pass in the same [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat#Parameters) as for `Intl.DateTimeFormat`.
 
-For best performance pass in reference to the same options object
+For best performance use the same options object (pass in reference)
 ```javascript
 const options = { weekday: 'short' };
 formatDate(new Date(), 'en-GB', options);
