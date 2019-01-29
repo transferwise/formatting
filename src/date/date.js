@@ -1,7 +1,7 @@
 import { isIntlSupported, isSelectedLocaleSupported } from './support-detection';
 import { getFallbackFormat } from './fallback-format';
+import { DEFAULT_LOCALE } from '../defaults';
 
-const DEFAULT_LOCALE = 'en-GB';
 const formatters = []; // cache, sample: { 'en-GB': Map {{options} => {formatter}} }
 
 export function formatDate(date, locale = DEFAULT_LOCALE, options) {
