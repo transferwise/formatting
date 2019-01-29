@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/formatting
   docker:
-    - image: circleci/node:10.6-browsers
+    - image: circleci/node:lts-browsers
 
 jobs:
   dependencies:
