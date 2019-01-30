@@ -59,7 +59,8 @@ export function formatNumber(number, precision, locale = DEFAULT_LOCALE) {
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed#Parameters
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat#Parameters
   const isPrecisionValid =
-    precision &&
+    precision !== undefined &&
+    precision !== null &&
     typeof precision === 'number' &&
     precision >= MIN_PRECISION &&
     precision <= MAX_PRECISION;
