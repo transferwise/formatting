@@ -3,15 +3,28 @@ describe('Currency formatting', () => {
   let formatMoney;
 
   let originalAbsoluteFunction;
+  let originalNumberFormat;
 
   beforeEach(() => {
     reloadFormatting(); // As the module saves state, need to reload the module.
     originalAbsoluteFunction = Math.abs;
+    originalNumberFormat = Intl.NumberFormat;
     Math.abs = jest.fn(num => (num.isFake ? num : originalAbsoluteFunction(num)));
   });
 
   afterEach(() => {
     Math.abs = originalAbsoluteFunction;
+    Intl.NumberFormat = originalNumberFormat;
+  });
+
+  it('uses toFixed to format if Intl.NumberFormat is not supported', () => {
+    Intl.NumberFormat = 'THIS_MAKES_isIntlNumberFormatSupported_FALSE';
+
+    expect(formatAmount(fakeNumber(), 'jpy')).toBe('fixed for precision 0');
+
+    reloadFormatting();
+
+    expect(formatAmount(1234.56, 'eur')).toBe('1234.56'); // sanity check
   });
 
   it('has a precision fallback for unknown currencies', () => {
@@ -38,5 +51,15 @@ describe('Currency formatting', () => {
     formatAmount = formatting.formatAmount;
     // eslint-disable-next-line prefer-destructuring
     formatMoney = formatting.formatMoney;
+  }
+
+  function fakeNumber() {
+    return {
+      isFake: true,
+
+      toFixed(precision) {
+        return `fixed for precision ${precision}`;
+      },
+    };
   }
 });
