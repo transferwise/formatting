@@ -1,6 +1,31 @@
 import { DEFAULT_LOCALE, MIN_PRECISION, MAX_PRECISION } from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
 
+const formatters = []; // cache, sample: { 'en-GB': Map {{options} => {formatter}} }
+const localeFormatters = new Map(); // cache, sample: { 'en-GB': NumberFormat }
+
+/**
+ * Returns a formatter for the specified locale and NumberFormatOptions
+ * @param {String} locale
+ * @param {Intl.NumberFormatOptions} options
+ * @returns {Intl.NumberFormat}
+ */
+function getFormatter(locale, options) {
+  if (!options) {
+    if (!localeFormatters.has(locale)) {
+      localeFormatters.set(locale, new Intl.NumberFormat(locale));
+    }
+    return localeFormatters.get(locale);
+  }
+  if (!formatters[locale]) {
+    formatters[locale] = new Map();
+  }
+  if (!formatters[locale].has(options)) {
+    formatters[locale].set(options, new Intl.NumberFormat(locale, options));
+  }
+  return formatters[locale].get(options);
+}
+
 /**
  * Returns the desired options object for
  * `Number.toLocaleString` and `Intl.NumberFormat` methods
@@ -43,7 +68,9 @@ export function formatNumber(number, precision, locale = DEFAULT_LOCALE) {
     return isPrecisionValid ? number.toFixed(precision) : `${number}`;
   }
 
-  return isPrecisionValid
-    ? new Intl.NumberFormat(locale, getPrecisionOptions(precision)).format(number)
-    : new Intl.NumberFormat(locale).format(number);
+  const formatter = isPrecisionValid
+    ? getFormatter(locale, getPrecisionOptions(precision))
+    : getFormatter(locale);
+
+  return formatter.format(number);
 }
