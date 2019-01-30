@@ -1,21 +1,26 @@
 import { DEFAULT_LOCALE } from '../defaults';
 import { formatNumber } from './number';
+import * as intl from './feature-detection/intl';
 
-describe('Number formatting, when Intl.NumberFormat is supported', () => {
+describe('Number formatting, when Intl.NumberFormat is not supported', () => {
   let number = 123456;
   let locale = DEFAULT_LOCALE;
   let precision;
 
+  beforeAll(() => {
+    intl.isIntlNumberFormatSupported = jest.fn().mockReturnValue(false);
+  });
+
   describe('when no locale supplied', () => {
     it(`should use the ${DEFAULT_LOCALE}`, () => {
-      expect(formatNumber(number)).toEqual('123,456');
+      expect(formatNumber(number)).toEqual('123456');
     });
   });
 
   describe('when en-GB locale supplied', () => {
     describe('and given an integer number', () => {
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('123,456');
+        expect(formatNumber(number, null, 'en-GB')).toEqual('123456');
       });
     });
 
@@ -25,7 +30,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('1,234.56');
+        expect(formatNumber(number, null, 'en-GB')).toEqual('1234.56');
       });
     });
 
@@ -35,7 +40,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('123,456');
+        expect(formatNumber(number, null, 'en-GB')).toEqual('123456');
       });
     });
 
@@ -45,25 +50,14 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('1,234.56');
+        expect(formatNumber(number, null, 'en-GB')).toEqual('1234.56');
       });
     });
   });
 
   describe('when es-ES locale supplied', () => {
-    let originalNumberFormat;
-    let format;
-
-    beforeAll(() => {
+    beforeEach(() => {
       locale = 'es-ES';
-
-      originalNumberFormat = Intl.NumberFormat;
-      format = jest.fn().mockReturnValue('123456');
-      Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
-    });
-
-    afterAll(() => {
-      Intl.NumberFormat = originalNumberFormat;
     });
 
     describe('and given an integer number', () => {
@@ -72,9 +66,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
-        expect(Intl.NumberFormat).lastCalledWith('es-ES');
-        expect(format).lastCalledWith(number);
+        expect(formatNumber(number, null, locale)).toEqual('123456');
       });
     });
 
@@ -84,9 +76,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
-        expect(Intl.NumberFormat).lastCalledWith('es-ES');
-        expect(format).lastCalledWith(number);
+        expect(formatNumber(number, null, locale)).toEqual('1234.56');
       });
     });
 
@@ -96,9 +86,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
-        expect(Intl.NumberFormat).lastCalledWith('es-ES');
-        expect(format).lastCalledWith(+number);
+        expect(formatNumber(number, null, locale)).toEqual('123456');
       });
     });
 
@@ -108,9 +96,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
-        expect(Intl.NumberFormat).lastCalledWith('es-ES');
-        expect(format).lastCalledWith(+number);
+        expect(formatNumber(number, null, locale)).toEqual('1234.56');
       });
     });
   });
@@ -123,7 +109,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
 
     it('should format the value with the correct decimals', () => {
-      expect(formatNumber(number, precision)).toEqual('1,234.50');
+      expect(formatNumber(number, precision)).toEqual('1234.50');
     });
   });
 });
