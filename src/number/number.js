@@ -39,7 +39,7 @@ function getPrecisionOptions(precision) {
  * @param {String} locale
  * @returns {String}
  */
-export function formatNumber(number, precision, locale = DEFAULT_LOCALE) {
+export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
   if (!number) {
     return null;
   }

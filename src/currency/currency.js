@@ -55,7 +55,7 @@ export function formatAmount(amount, currencyCode, locale = DEFAULT_LOCALE) {
   const isNegative = amount < 0;
   const absoluteAmount = Math.abs(amount);
 
-  const formattedAbsoluteAmount = formatNumber(absoluteAmount, precision, locale);
+  const formattedAbsoluteAmount = formatNumber(absoluteAmount, locale, precision);
 
   return isNegative ? `- ${formattedAbsoluteAmount}` : formattedAbsoluteAmount;
 }

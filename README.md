@@ -2,6 +2,20 @@
 
 ## Usage
 
+### Number formatting
+```javascript
+import { formatNumber } from '@transferwise/formatting';
+
+const number = 123456;
+
+console.log(formatDate(number, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '123,456'
+console.log(formatDate(number, 'es-ES', 0 /* Optional precision, defaults to 0 */));
+// --> '123.456'
+console.log(formatDate(number, 'hu-HU'));
+// --> '123 456'
+```
+
 ### Amount formatting
 
 ```javascript
@@ -63,20 +77,6 @@ For third parameter pass in the same [options](https://developer.mozilla.org/en-
 const options = { weekday: 'short' };
 formatDate(new Date(), 'en-GB', options);
 formatDate(new Date(), 'en-GB', options);
-```
-
-### Number formatting
-```javascript
-import { formatNumber } from '@transferwise/formatting';
-
-const number = 123456;
-
-console.log(formatDate(number, 0, 'en-GB' /* Optional, defaults to en-GB */));
-// --> '123,456'
-console.log(formatDate(number, 0, 'es-ES'));
-// --> '123.456'
-console.log(formatDate(number, 0, 'hu-HU'));
-// --> '123 456'
 ```
 
 ## Developing

@@ -15,7 +15,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
   describe('when en-GB locale supplied', () => {
     describe('and given an integer number', () => {
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('123,456');
+        expect(formatNumber(number, 'en-GB')).toEqual('123,456');
       });
     });
 
@@ -25,7 +25,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('1,234.56');
+        expect(formatNumber(number, 'en-GB')).toEqual('1,234.56');
       });
     });
 
@@ -35,7 +35,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('123,456');
+        expect(formatNumber(number, 'en-GB')).toEqual('123,456');
       });
     });
 
@@ -45,7 +45,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        expect(formatNumber(number, null, 'en-GB')).toEqual('1,234.56');
+        expect(formatNumber(number, 'en-GB')).toEqual('1,234.56');
       });
     });
   });
@@ -72,7 +72,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
+        formatNumber(number, locale);
         expect(Intl.NumberFormat).lastCalledWith('es-ES');
         expect(format).lastCalledWith(number);
       });
@@ -84,7 +84,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
+        formatNumber(number, locale);
         expect(Intl.NumberFormat).lastCalledWith('es-ES');
         expect(format).lastCalledWith(number);
       });
@@ -96,7 +96,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
+        formatNumber(number, locale);
         expect(Intl.NumberFormat).lastCalledWith('es-ES');
         expect(format).lastCalledWith(+number);
       });
@@ -108,7 +108,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
       });
 
       it('should format the value', () => {
-        formatNumber(number, null, locale);
+        formatNumber(number, locale);
         expect(Intl.NumberFormat).lastCalledWith('es-ES');
         expect(format).lastCalledWith(+number);
       });
@@ -123,7 +123,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
 
     it('should format the value with the correct decimals', () => {
-      expect(formatNumber(number, precision)).toEqual('1,234.50');
+      expect(formatNumber(number, locale, precision)).toEqual('1,234.50');
     });
   });
 });
