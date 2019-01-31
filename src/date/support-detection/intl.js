@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE } from '../../defaults';
+
 let intlSupported; // cache
 
 export function isIntlSupported() {
@@ -10,7 +12,7 @@ export function isIntlSupported() {
 function intlDateTimeFormatReturnsCorrectValue() {
   try {
     const date = new Date(2018, 11, 1);
-    const dateString = new Intl.DateTimeFormat('en-GB').format(date);
+    const dateString = new Intl.DateTimeFormat(DEFAULT_LOCALE).format(date);
     return dateString === '01/12/2018';
   } catch (e) {
     return false;

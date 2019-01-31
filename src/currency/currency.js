@@ -1,3 +1,6 @@
+import { DEFAULT_LOCALE } from '../defaults';
+import { formatNumber } from '../number';
+
 const currencyDecimals = {
   BIF: 0,
   BYR: 0,
@@ -28,17 +31,6 @@ const currencyDecimals = {
 
 const DEFAULT_CURRENCY_DECIMALS = 2;
 
-let numberLocaleSupported;
-
-function isNumberLocaleSupported() {
-  if (numberLocaleSupported === undefined) {
-    const number = 1234;
-    const numberString = number.toLocaleString && number.toLocaleString('en-GB');
-    numberLocaleSupported = numberString === '1,234';
-  }
-  return numberLocaleSupported;
-}
-
 function getCurrencyDecimals(currency = '') {
   const upperCaseCurrency = currency.toUpperCase();
   if (Object.prototype.hasOwnProperty.call(currencyDecimals, upperCaseCurrency)) {
@@ -58,21 +50,16 @@ function getPrecision(amount, currencyCode) {
   return getCurrencyDecimals(currencyCode);
 }
 
-export function formatAmount(amount, currencyCode, locale = 'en-GB') {
+export function formatAmount(amount, currencyCode, locale = DEFAULT_LOCALE) {
   const precision = getPrecision(amount, currencyCode);
   const isNegative = amount < 0;
   const absoluteAmount = Math.abs(amount);
 
-  const formattedAbsoluteAmount = isNumberLocaleSupported()
-    ? absoluteAmount.toLocaleString(locale, {
-        minimumFractionDigits: precision,
-        maximumFractionDigits: precision,
-      })
-    : absoluteAmount.toFixed(precision);
+  const formattedAbsoluteAmount = formatNumber(absoluteAmount, locale, precision);
 
   return isNegative ? `- ${formattedAbsoluteAmount}` : formattedAbsoluteAmount;
 }
 
-export function formatMoney(amount, currencyCode, locale = 'en-GB') {
+export function formatMoney(amount, currencyCode, locale = DEFAULT_LOCALE) {
   return `${formatAmount(amount, currencyCode, locale)} ${(currencyCode || '').toUpperCase()}`;
 }

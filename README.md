@@ -2,6 +2,20 @@
 
 ## Usage
 
+### Number formatting
+```javascript
+import { formatNumber } from '@transferwise/formatting';
+
+const number = 123456;
+
+console.log(formatDate(number, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '123,456'
+console.log(formatDate(number, 'es-ES', 0 /* Optional precision, defaults to 0 */));
+// --> '123.456'
+console.log(formatDate(number, 'hu-HU'));
+// --> '123 456'
+```
+
 ### Amount formatting
 
 ```javascript
