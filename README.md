@@ -65,6 +65,20 @@ formatDate(new Date(), 'en-GB', options);
 formatDate(new Date(), 'en-GB', options);
 ```
 
+### Number formatting
+```javascript
+import { formatNumber } from '@transferwise/formatting';
+
+const number = 123456;
+
+console.log(formatDate(number, 0, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '123,456'
+console.log(formatDate(number, 0, 'es-ES'));
+// --> '123.456'
+console.log(formatDate(number, 0, 'hu-HU'));
+// --> '123 456'
+```
+
 ## Developing
 
 As usual, `npm install` to install dependencies.
