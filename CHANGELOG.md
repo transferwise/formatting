@@ -1,3 +1,6 @@
+# v1.4.1
+## Fix typo in README.md and in CHANGELOG.md
+
 # v1.4.0
 ## Formatting numbers
 

@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/formatting",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A library for formatting things, like dates and currencies and the like.",
   "main": "./dist/formatting.js",
   "scripts": {
