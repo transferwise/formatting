@@ -1,3 +1,19 @@
+# v1.4.0
+## Formatting numbers
+
+```javascript
+import { formatNumber } from '@transferwise/formatting';
+
+const number = 123456;
+
+console.log(formatDate(number, 0, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '123,456'
+console.log(formatDate(number, 0, 'es-ES'));
+// --> '123.456'
+console.log(formatDate(number, 0, 'hu-HU'));
+// --> '123 456'
+```
+
 # v1.3.2
 ## Date formatting performance improvements
 
