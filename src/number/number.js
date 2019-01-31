@@ -1,8 +1,7 @@
 import { DEFAULT_LOCALE, MIN_PRECISION, MAX_PRECISION } from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
 
-const formatters = []; // cache, sample: { 'en-GB': Map {{options} => {formatter}} }
-const localeFormatters = new Map(); // cache, sample: { 'en-GB': NumberFormat }
+const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatter }
 
 /**
  * Returns a formatter for the specified locale and NumberFormatOptions
@@ -11,19 +10,13 @@ const localeFormatters = new Map(); // cache, sample: { 'en-GB': NumberFormat }
  * @returns {Intl.NumberFormat}
  */
 function getFormatter(locale, options) {
-  if (!options) {
-    if (!localeFormatters.has(locale)) {
-      localeFormatters.set(locale, new Intl.NumberFormat(locale));
-    }
-    return localeFormatters.get(locale);
+  const cacheKey = options ? `${locale}${options.minimumFractionDigits}` : locale;
+  if (!formatters[cacheKey]) {
+    formatters[cacheKey] = options
+      ? new Intl.NumberFormat(locale, options)
+      : new Intl.NumberFormat(locale);
   }
-  if (!formatters[locale]) {
-    formatters[locale] = new Map();
-  }
-  if (!formatters[locale].has(options)) {
-    formatters[locale].set(options, new Intl.NumberFormat(locale, options));
-  }
-  return formatters[locale].get(options);
+  return formatters[cacheKey];
 }
 
 /**
