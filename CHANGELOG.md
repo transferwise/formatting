@@ -1,3 +1,6 @@
+# v1.4.2
+## Fix zero value formatting
+
 # v1.4.1
 ## Fix typo in README.md and in CHANGELOG.md
 

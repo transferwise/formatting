@@ -43,6 +43,10 @@ describe('Currency formatting', () => {
     expect(formatMoney(1234.5, 'gbp')).toBe('1,234.50 GBP');
   });
 
+  it('formats money when passed zero values', () => {
+    expect(formatMoney(0, 'gbp')).toBe('0 GBP');
+  });
+
   function reloadFormatting() {
     jest.resetModules();
     // eslint-disable-next-line global-require
