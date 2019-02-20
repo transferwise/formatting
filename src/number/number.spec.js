@@ -48,6 +48,26 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         expect(formatNumber(number, 'en-GB')).toEqual('1,234.56');
       });
     });
+
+    describe('and given a zero valued number', () => {
+      beforeEach(() => {
+        number = 0.0;
+      });
+
+      it('should format the value', () => {
+        expect(formatNumber(number, 'en-GB')).toEqual('0');
+      });
+    });
+
+    describe('and given a string zero valued number', () => {
+      beforeEach(() => {
+        number = '0';
+      });
+
+      it('should format the value', () => {
+        expect(formatNumber(number, 'en-GB')).toEqual('0');
+      });
+    });
   });
 
   describe('when es-ES locale supplied', () => {
@@ -116,14 +136,49 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
   });
 
   describe('when a precision is supplied', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       locale = DEFAULT_LOCALE;
-      number = '1234.5';
       precision = 2;
     });
 
-    it('should format the value with the correct decimals', () => {
-      expect(formatNumber(number, locale, precision)).toEqual('1,234.50');
+    describe('and given a value with decimals', () => {
+      beforeEach(() => {
+        number = '1234.5';
+      });
+
+      it('should format the value with the expected fixed precision', () => {
+        expect(formatNumber(number, locale, precision)).toEqual('1,234.50');
+      });
+    });
+
+    describe('and given a value with no decimals', () => {
+      beforeEach(() => {
+        number = 10;
+      });
+
+      it('should format the value with the expected fixed precision', () => {
+        expect(formatNumber(number, locale, precision)).toEqual('10.00');
+      });
+    });
+
+    describe('and given a zero value', () => {
+      beforeEach(() => {
+        number = 0;
+      });
+
+      it('should format the value with the expected fixed precision', () => {
+        expect(formatNumber(number, locale, precision)).toEqual('0.00');
+      });
+    });
+
+    describe('and given an undefined value', () => {
+      beforeEach(() => {
+        number = undefined;
+      });
+
+      it('should return null', () => {
+        expect(formatNumber(number, locale, precision)).toEqual(null);
+      });
     });
   });
 });

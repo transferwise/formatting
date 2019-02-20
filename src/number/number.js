@@ -40,7 +40,7 @@ function getPrecisionOptions(precision) {
  * @returns {String}
  */
 export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
-  if (!number) {
+  if (!number && number !== 0) {
     return null;
   }
 
