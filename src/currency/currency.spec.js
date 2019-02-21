@@ -47,6 +47,50 @@ describe('Currency formatting', () => {
     expect(formatMoney(0, 'gbp')).toBe('0 GBP');
   });
 
+  describe('when different levels of precision are given', () => {
+    let currency;
+
+    describe('with a currency supporting a precision level of 2 decimals', () => {
+      beforeEach(() => {
+        currency = 'gbp';
+      });
+
+      it('formats money given 3 decimals', () => {
+        expect(formatMoney(1.111, currency, 'en')).toBe('1.11 GBP');
+      });
+
+      it('formats money given 2 decimals', () => {
+        expect(formatMoney(1.11, currency, 'en')).toBe('1.11 GBP');
+      });
+
+      it('formats money given 1 decimal', () => {
+        expect(formatMoney(1.1, currency, 'en')).toBe('1.10 GBP');
+      });
+
+      it('formats money with no decimals without alwaysShowDecimals option', () => {
+        expect(formatMoney(1, currency, 'en')).toBe('1 GBP');
+      });
+
+      it('formats money with no decimals, when given alwaysShowDecimals option', () => {
+        expect(formatMoney(1, currency, 'en', { alwaysShowDecimals: true })).toBe('1.00 GBP');
+      });
+    });
+
+    describe('with a currency supporting a precision level of 0 decimals', () => {
+      beforeEach(() => {
+        currency = 'huf';
+      });
+
+      it('formats money without options', () => {
+        expect(formatMoney(1.111, currency, 'en')).toBe('1 HUF');
+      });
+
+      it('formats money when given alwaysShowDecimals option', () => {
+        expect(formatMoney(1.11, currency, 'en', { alwaysShowDecimals: true })).toBe('1 HUF');
+      });
+    });
+  });
+
   function reloadFormatting() {
     jest.resetModules();
     // eslint-disable-next-line global-require
