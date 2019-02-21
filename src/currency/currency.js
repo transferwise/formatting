@@ -43,23 +43,36 @@ function amountHasNoDecimals(amount) {
   return amount % 1 === 0;
 }
 
-function getPrecision(amount, currencyCode) {
-  if (amountHasNoDecimals(amount)) {
+function getPrecision(amount, currencyCode, alwaysShowDecimals) {
+  if (amountHasNoDecimals(amount) && !alwaysShowDecimals) {
     return 0;
   }
+
   return getCurrencyDecimals(currencyCode);
 }
 
-export function formatAmount(amount, currencyCode, locale = DEFAULT_LOCALE) {
-  const precision = getPrecision(amount, currencyCode);
+export function formatAmount(
+  amount,
+  currencyCode,
+  locale = DEFAULT_LOCALE,
+  options = { alwaysShowDecimals: false },
+) {
+  const availablePrecision = getPrecision(amount, currencyCode, options.alwaysShowDecimals);
   const isNegative = amount < 0;
   const absoluteAmount = Math.abs(amount);
 
-  const formattedAbsoluteAmount = formatNumber(absoluteAmount, locale, precision);
+  const formattedAbsoluteAmount = formatNumber(absoluteAmount, locale, availablePrecision);
 
   return isNegative ? `- ${formattedAbsoluteAmount}` : formattedAbsoluteAmount;
 }
 
-export function formatMoney(amount, currencyCode, locale = DEFAULT_LOCALE) {
-  return `${formatAmount(amount, currencyCode, locale)} ${(currencyCode || '').toUpperCase()}`;
+export function formatMoney(
+  amount,
+  currencyCode,
+  locale = DEFAULT_LOCALE,
+  options = { alwaysShowDecimals: false },
+) {
+  return `${formatAmount(amount, currencyCode, locale, options)} ${(
+    currencyCode || ''
+  ).toUpperCase()}`;
 }

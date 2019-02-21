@@ -1,3 +1,6 @@
+# v1.5.0
+## Add ability to format currencies with alwaysShowDecimals option
+
 # v1.4.3
 ## Checking number formatting locales for validity
 
