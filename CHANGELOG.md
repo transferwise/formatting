@@ -1,3 +1,6 @@
+# v1.4.3
+## Checking number formatting locales for validity
+
 # v1.4.2
 ## Fix zero value formatting
 
