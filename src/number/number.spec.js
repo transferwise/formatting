@@ -70,6 +70,35 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
   });
 
+  describe('when an invalid locale supplied', () => {
+    let originalNumberFormat;
+    let format;
+
+    beforeAll(() => {
+      locale = 'en_US';
+
+      originalNumberFormat = Intl.NumberFormat;
+      format = jest.fn().mockReturnValue('123456');
+      Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
+    });
+
+    afterAll(() => {
+      Intl.NumberFormat = originalNumberFormat;
+    });
+
+    describe('and given an integer number', () => {
+      beforeEach(() => {
+        number = 123456;
+      });
+
+      it('should format the value with a valid locale', () => {
+        formatNumber(number, locale);
+        expect(Intl.NumberFormat).lastCalledWith('en-US');
+        expect(format).lastCalledWith(number);
+      });
+    });
+  });
+
   describe('when es-ES locale supplied', () => {
     let originalNumberFormat;
     let format;
