@@ -38,10 +38,10 @@ function getPrecisionOptions(precision) {
  */
 function getValidLocale(locale) {
   try {
-    const value = 10;
+    const number = 10;
     const noUnderscoreLocale = locale.replace(/_/, '-');
 
-    value.toLocaleString(noUnderscoreLocale);
+    number.toLocaleString(noUnderscoreLocale);
     return noUnderscoreLocale;
   } catch (e) {
     return DEFAULT_LOCALE;
@@ -56,7 +56,7 @@ function getValidLocale(locale) {
  * @param {String} locale
  * @returns {String}
  */
-export function formatNumber(number, locale, precision) {
+export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
   if (!number && number !== 0) {
     return null;
   }

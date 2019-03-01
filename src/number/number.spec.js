@@ -12,6 +12,12 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
   });
 
+  describe('when an invalid locale', () => {
+    it(`should use the ${DEFAULT_LOCALE}`, () => {
+      expect(formatNumber(number, 'invalid_locale')).toEqual('123,456');
+    });
+  });
+
   describe('when en-GB locale supplied', () => {
     describe('and given an integer number', () => {
       it('should format the value', () => {
