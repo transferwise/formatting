@@ -12,6 +12,12 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
   });
 
+  describe('when an invalid locale', () => {
+    it(`should use the ${DEFAULT_LOCALE}`, () => {
+      expect(formatNumber(number, 'invalid_locale')).toEqual('123,456');
+    });
+  });
+
   describe('when en-GB locale supplied', () => {
     describe('and given an integer number', () => {
       it('should format the value', () => {
@@ -66,6 +72,35 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
 
       it('should format the value', () => {
         expect(formatNumber(number, 'en-GB')).toEqual('0');
+      });
+    });
+  });
+
+  describe('when an invalid locale supplied', () => {
+    let originalNumberFormat;
+    let format;
+
+    beforeAll(() => {
+      locale = 'en_US';
+
+      originalNumberFormat = Intl.NumberFormat;
+      format = jest.fn().mockReturnValue('123456');
+      Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
+    });
+
+    afterAll(() => {
+      Intl.NumberFormat = originalNumberFormat;
+    });
+
+    describe('and given an integer number', () => {
+      beforeEach(() => {
+        number = 123456;
+      });
+
+      it('should format the value with a valid locale', () => {
+        formatNumber(number, locale);
+        expect(Intl.NumberFormat).lastCalledWith('en-US');
+        expect(format).lastCalledWith(number);
       });
     });
   });

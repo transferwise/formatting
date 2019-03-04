@@ -32,6 +32,22 @@ function getPrecisionOptions(precision) {
 }
 
 /**
+ * Returns the locale that was passed in if it works
+ * with `toLocaleString` or otherwise falls back to `DEFAULT_LOCALE`
+ * @param {String} locale
+ */
+function getValidLocale(locale) {
+  try {
+    const noUnderscoreLocale = locale.replace(/_/, '-');
+
+    Intl.NumberFormat(noUnderscoreLocale);
+    return noUnderscoreLocale;
+  } catch (e) {
+    return DEFAULT_LOCALE;
+  }
+}
+
+/**
  * Formats a number precisely with valid fallback even if the
  * `toLocaleString` method is not supported by the actual browser
  * @param {Number|String} number
@@ -58,13 +74,15 @@ export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
     precision >= MIN_PRECISION &&
     precision <= MAX_PRECISION;
 
-  if (!isIntlNumberFormatSupported(locale)) {
+  const validatedLocale = getValidLocale(locale);
+
+  if (!isIntlNumberFormatSupported(validatedLocale)) {
     return isPrecisionValid ? number.toFixed(precision) : `${number}`;
   }
 
   const formatter = isPrecisionValid
-    ? getFormatter(locale, getPrecisionOptions(precision))
-    : getFormatter(locale);
+    ? getFormatter(validatedLocale, getPrecisionOptions(precision))
+    : getFormatter(validatedLocale);
 
   return formatter.format(number);
 }
