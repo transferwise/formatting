@@ -38,10 +38,9 @@ function getPrecisionOptions(precision) {
  */
 function getValidLocale(locale) {
   try {
-    const number = 10;
     const noUnderscoreLocale = locale.replace(/_/, '-');
 
-    number.toLocaleString(noUnderscoreLocale);
+    Intl.NumberFormat(noUnderscoreLocale);
     return noUnderscoreLocale;
   } catch (e) {
     return DEFAULT_LOCALE;
