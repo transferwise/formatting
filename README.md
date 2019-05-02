@@ -39,13 +39,28 @@ console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB *
 
 ### Rate formatting
 
+`formatRate` is to format the exchange Rates. It also accepts the  `sourceCurrency` and `targetCurrency` parameters.
+
+If the `sourceCurrency` is in the list of `weakCurrencies`, then it will format the exchange rate in the inverted format.(For example: 1 USD = 112.35955 JPY)
+
+Current list of weak currencies: [`BRL`, `INR`, `JPY`]
+
 ```javascript
 import { formatRate } from '@transferwise/formatting';
 
+// Deprecated
 console.log(formatRate(1.23456789));
 // --> '1.23457'
 console.log(formatRate(1.23));
 // --> '1.23000'
+
+console.log(formatRate(0.0089, 'JPY', 'USD'));
+// --> '1 USD = 112.35955 JPY'
+console.log(formatRate(0.1954, 'BRL', 'GBP'));
+// --> '1 GBP = 5.11771 BRL'
+
+console.log(formatRate(0.7658, 'USD', 'GBP'))
+// '0.76580'
 ```
 
 ### Percentage formatting
