@@ -1,21 +1,39 @@
-export function formatRate(exchangeRate, sourceCurrency, targetCurrency) {
-  if (!sourceCurrency || !targetCurrency) {
-    return defaultFormatRate(exchangeRate);
+import { isAWeakCurrency } from '../currency/weak-currencies';
+import {
+  NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
+  EXCHANGE_RATE_INVERSION_THRESHOLD,
+} from '../defaults';
+
+export function formatRate(exchangeRate, sourceCurrency, targetCurrency, options) {
+  const defaults = {
+    skipRateInvertion: false,
+    numberOfSignificantDigits: NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
+  };
+  options = Object.assign({}, defaults, options);
+
+  if (
+    sourceCurrency &&
+    targetCurrency &&
+    !options.skipRateInvertion &&
+    isAWeakCurrency(sourceCurrency) &&
+    isBelowThreshold(exchangeRate)
+  ) {
+    return formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency, options);
   }
-
-  return isAWeakCurrency(sourceCurrency)
-    ? formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency)
-    : defaultFormatRate(exchangeRate);
+  return formatToSignificantFigures(exchangeRate, options.numberOfSignificantDigits);
 }
 
-function defaultFormatRate(exchangeRate) {
-  return exchangeRate.toFixed(5);
+function formatToSignificantFigures(exchangeRate, numberOfSignificantDigits) {
+  return exchangeRate.toPrecision(numberOfSignificantDigits);
 }
 
-function formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency) {
-  return `1 ${targetCurrency} = ${defaultFormatRate(1 / exchangeRate)} ${sourceCurrency}`;
+function formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency, options) {
+  return `1 ${targetCurrency.toUpperCase()} = ${formatToSignificantFigures(
+    1 / exchangeRate,
+    options.numberOfSignificantDigits,
+  )} ${sourceCurrency.toUpperCase()}`;
 }
 
-function isAWeakCurrency(currency) {
-  return ['BRL', 'INR', 'JPY'].indexOf(currency) !== -1;
+function isBelowThreshold(exchangeRate) {
+  return exchangeRate <= EXCHANGE_RATE_INVERSION_THRESHOLD;
 }
