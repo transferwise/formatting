@@ -1,4 +1,4 @@
-import config from './config';
+import rateInversionEnabledCurrencies from './rateInversionEnabledCurrencies.json';
 import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, RATE_INVERSION_THRESHOLD } from '../defaults';
 
 export function formatRate(
@@ -46,5 +46,5 @@ function isBelowThreshold(exchangeRate) {
 }
 
 function isRateInversionEnabled(currency) {
-  return config.rateInversionEnabledCurrencies.indexOf(currency.toUpperCase()) !== -1;
+  return rateInversionEnabledCurrencies.indexOf(currency.toUpperCase()) !== -1;
 }

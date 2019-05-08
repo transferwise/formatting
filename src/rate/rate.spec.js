@@ -1,16 +1,8 @@
 import { formatRate } from '..';
-import config from './config';
+
+jest.mock('./rateInversionEnabledCurrencies.json', () => ['JPY', 'ARS']);
 
 describe('Rate formatting', () => {
-  const originalConfig = config.rateInversionEnabledCurrencies;
-  beforeAll(() => {
-    config.rateInversionEnabledCurrencies = ['JPY'];
-  });
-
-  afterAll(() => {
-    config.rateInversionEnabledCurrencies = originalConfig;
-  });
-
   it('formats rate with significant figures when source currency is not given', () => {
     expect(formatRate(1.23)).toBe('1.23000');
     expect(formatRate(111.23)).toBe('111.230');

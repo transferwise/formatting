@@ -39,29 +39,41 @@ console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB *
 
 ### Rate formatting
 
-`formatRate` is to format the exchange Rates. It also accepts the  `sourceCurrency` and `targetCurrency` parameters.
+`formatRate` is to format the exchange rates with six significant figure accuracy. It also accepts the  `sourceCurrency` and `targetCurrency` parameters.
 
-If the `sourceCurrency` is in the list of [weakCurrencies](src/currency/weak-currencies.js), then it will format the exchange rate in the inverted format.(For example: 1 USD = 112.35955 JPY)
+If the `sourceCurrency` is in the list of [RateInversionEnabledCurrencies](src/rate/rateInversionEnabledCurrencies.json) and also the exchange rate is below the threshold(0.30), then it will format the exchange rate in the inverted format.(For example: 1 USD = 112.359 JPY)
 
 ```javascript
 import { formatRate } from '@transferwise/formatting';
 
-// Deprecated: Clients are discouraged to pass only the `exchange rate`.
-// Pass the `sourceCurrency` and `targetCurrency` parameters wherever possible.
+console.log(formatRate(0.7658, 'USD', 'GBP'));
+// '0.765800'
+
+console.log(formatRate(0.0089, 'JPY', 'USD'));
+// --> '1 USD = 112.359 JPY'
+
+console.log(formatRate(0.1954, 'BRL', 'GBP'));
+// --> '1 GBP = 5.11771 BRL'
+
+/* To override the number of significant digits used in formatting */
+console.log(formatRate(0.7658, 'USD', 'GBP', { numberOfSignificantDigits: 5 }));
+// '0.76580'
+
+console.log(formatRate(0.1954, 'BRL', 'GBP', { numberOfSignificantDigits: 5 }));
+// --> '1 GBP = 5.1177 BRL'
+
+console.log(formatRate(0.1954, 'BRL', 'GBP', { skipInversion: true }));
+// --> '0.195400'
+
+/* Deprecated: Clients are discouraged to pass only the `exchange rate`.
+Pass the `sourceCurrency` and `targetCurrency` parameters wherever possible. */
 console.log(formatRate(1.23456789));
 // --> '1.23457'
 console.log(formatRate(1.23));
 // --> '1.23000'
 
-console.log(formatRate(0.0089, 'JPY', 'USD'));
-// --> '1 USD = 112.359 JPY'
-console.log(formatRate(0.1954, 'BRL', 'GBP'));
-// --> '1 GBP = 5.11771 BRL'
-
-console.log(formatRate(0.7658, 'USD', 'GBP'))
-// '0.765800'
-
-console.log(formatRate(0.))
+console.log(formatRate(0.002));
+// --> '0.00200000'
 ```
 
 ### Percentage formatting
