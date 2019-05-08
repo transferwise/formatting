@@ -9,7 +9,7 @@ export function formatRate(exchangeRate, sourceCurrency, targetCurrency, options
     skipExchangeRateInversion: false,
     numberOfSignificantDigits: NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
   };
-  options = Object.assign({}, defaults, options);
+  const options = Object.assign({}, defaults, options);
 
   if (
     sourceCurrency &&
