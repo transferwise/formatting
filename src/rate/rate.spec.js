@@ -1,22 +1,14 @@
 import { formatRate } from '..';
-import config from '../config';
+import config from './config';
 
 describe('Rate formatting', () => {
-  const originalCurrenciesConfig = config.currencies;
+  const originalConfig = config.rateInversionEnabledCurrencies;
   beforeAll(() => {
-    config.currencies = {
-      JPY: {
-        hasExchangeRateInversionEnabled: true,
-      },
-      BRL: {
-        hasExchangeRateInversionEnabled: false,
-      },
-      IDR: {},
-    };
+    config.rateInversionEnabledCurrencies = ['JPY'];
   });
 
   afterAll(() => {
-    config.currencies = originalCurrenciesConfig;
+    config.rateInversionEnabledCurrencies = originalConfig;
   });
 
   it('formats rate with significant figures when source currency is not given', () => {
@@ -36,7 +28,7 @@ describe('Rate formatting', () => {
 
   it('formats rate with significant figures when exchange rate inversion is not enabled for source currency', () => {
     expect(formatRate(1.92307, 'USD', 'JPY')).toBe('1.92307');
-    expect(formatRate(1.92307, 'usd', 'jpy')).toBe('1.92307');
+    expect(formatRate(1.92307, 'idr', 'jpy')).toBe('1.92307');
   });
 
   it('formats rate with given number of significant figures', () => {
@@ -45,8 +37,8 @@ describe('Rate formatting', () => {
     expect(formatRate(0.2, 'BRL', 'GBP', options)).toBe('0.20000');
   });
 
-  it('formats rate with signicant figures if the skipExchangeRateInversion flag is passed', () => {
-    const options = { skipExchangeRateInversion: true };
+  it('formats rate with signicant figures if the skipInversion flag is passed', () => {
+    const options = { skipInversion: true };
     expect(formatRate(0.009, 'JPY', 'USD', options)).toBe('0.00900000');
   });
 });
