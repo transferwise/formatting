@@ -1,4 +1,4 @@
-import { isAWeakCurrency } from '../currency/weak-currencies';
+import config from '../config';
 import {
   NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
   EXCHANGE_RATE_INVERSION_THRESHOLD,
@@ -6,7 +6,7 @@ import {
 
 export function formatRate(exchangeRate, sourceCurrency, targetCurrency, options) {
   const defaults = {
-    skipRateInvertion: false,
+    skipExchangeRateInversion: false,
     numberOfSignificantDigits: NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
   };
   options = Object.assign({}, defaults, options);
@@ -14,11 +14,11 @@ export function formatRate(exchangeRate, sourceCurrency, targetCurrency, options
   if (
     sourceCurrency &&
     targetCurrency &&
-    !options.skipRateInvertion &&
-    isAWeakCurrency(sourceCurrency) &&
+    !options.skipExchangeRateInversion &&
+    hasExchangeRateInversionEnabled(sourceCurrency) &&
     isBelowThreshold(exchangeRate)
   ) {
-    return formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency, options);
+    return formatToInversedExchangeRate(exchangeRate, sourceCurrency, targetCurrency, options);
   }
   return formatToSignificantFigures(exchangeRate, options.numberOfSignificantDigits);
 }
@@ -27,13 +27,19 @@ function formatToSignificantFigures(exchangeRate, numberOfSignificantDigits) {
   return exchangeRate.toPrecision(numberOfSignificantDigits);
 }
 
-function formatWeakCurrencyRate(exchangeRate, sourceCurrency, targetCurrency, options) {
-  return `1 ${targetCurrency.toUpperCase()} = ${formatToSignificantFigures(
+function formatToInversedExchangeRate(exchangeRate, sourceCurrency, targetCurrency, options) {
+  const inversedAndFormattedRate = formatToSignificantFigures(
     1 / exchangeRate,
     options.numberOfSignificantDigits,
-  )} ${sourceCurrency.toUpperCase()}`;
+  );
+  return `1 ${targetCurrency.toUpperCase()} = ${inversedAndFormattedRate} ${sourceCurrency.toUpperCase()}`;
 }
 
 function isBelowThreshold(exchangeRate) {
   return exchangeRate <= EXCHANGE_RATE_INVERSION_THRESHOLD;
+}
+
+function hasExchangeRateInversionEnabled(currency) {
+  const currencyConfig = config.currencies[currency.toUpperCase()];
+  return currencyConfig && currencyConfig.hasExchangeRateInversionEnabled;
 }
