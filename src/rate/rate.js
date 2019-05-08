@@ -6,7 +6,7 @@ import {
 
 export function formatRate(exchangeRate, sourceCurrency, targetCurrency, options) {
   const defaults = {
-    skipExchangeRateInversion: false,
+    skipInversion: false,
     numberOfSignificantDigits: NUMBER_OF_EXCHANGE_RATE_SIGNIFICANT_DIGITS,
   };
   const options = Object.assign({}, defaults, options);
@@ -36,10 +36,10 @@ function formatToInversedExchangeRate(exchangeRate, sourceCurrency, targetCurren
 }
 
 function isBelowThreshold(exchangeRate) {
-  return exchangeRate <= EXCHANGE_RATE_INVERSION_THRESHOLD;
+  return exchangeRate < EXCHANGE_RATE_INVERSION_THRESHOLD;
 }
 
 function hasExchangeRateInversionEnabled(currency) {
   const currencyConfig = config.currencies[currency.toUpperCase()];
-  return currencyConfig && currencyConfig.hasExchangeRateInversionEnabled;
+  return (currencyConfig || {}).hasExchangeRateInversionEnabled;
 }
