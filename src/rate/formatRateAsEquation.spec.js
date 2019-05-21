@@ -1,4 +1,4 @@
-import formatRateAsEquation from './formatRateAsEquation';
+import { formatRateAsEquation } from './formatRateAsEquation';
 
 jest.mock('./config', () => ({
   BRL: { hasInversionEnabled: true },

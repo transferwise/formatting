@@ -1,9 +1,9 @@
-import formatRate from './formatRate';
+import { formatRate } from './formatRate';
 import { formatAmount } from '../currency';
 import config from './config';
 import { DEFAULT_RATE_MULTIPLIER } from '../defaults';
 
-export default function(
+export function formatRateAsEquation(
   rate,
   sourceCurrency,
   targetCurrency,

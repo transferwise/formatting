@@ -1,4 +1,4 @@
-import formatRate from './formatRate';
+import { formatRate } from './formatRate';
 
 describe('Rate formatting', () => {
   it('formats rate using default NUMBER_OF_RATE_SIGNIFICANT_DIGITS', () => {
