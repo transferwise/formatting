@@ -23,21 +23,21 @@ describe('Rate formatting', () => {
     expect(formatRateAsEquation(131.28, 'JPY', 'IDR')).toBe('10,000 IDR = 76.1731 JPY');
   });
 
-  it('formats rate as equation with incoming lhs value', () => {
-    expect(formatRateAsEquation(0.0023, 'BRL', 'USD', { lhs: 'source' })).toBe(
+  it('formats rate as equation with incoming reference value', () => {
+    expect(formatRateAsEquation(0.0023, 'BRL', 'USD', { reference: 'source' })).toBe(
       '1 BRL = 0.00230000 USD',
     );
   });
 
-  it('formats rate as equation with incoming lhsMultiplier value', () => {
-    expect(formatRateAsEquation(0.0023, 'BRL', 'USD', { lhsMultiplier: 10 })).toBe(
+  it('formats rate as equation with incoming referenceMultiplier value', () => {
+    expect(formatRateAsEquation(0.0023, 'BRL', 'USD', { referenceMultiplier: 10 })).toBe(
       '10 USD = 4347.83 BRL',
     );
   });
 
-  it('formats rate as equation with incoming lhs and lhsMultiplier value', () => {
-    expect(formatRateAsEquation(0.0023, 'BRL', 'USD', { lhs: 'source', lhsMultiplier: 100 })).toBe(
-      '100 BRL = 0.230000 USD',
-    );
+  it('formats rate as equation with incoming reference and referenceMultiplier value', () => {
+    expect(
+      formatRateAsEquation(0.0023, 'BRL', 'USD', { reference: 'source', referenceMultiplier: 100 }),
+    ).toBe('100 BRL = 0.230000 USD');
   });
 });

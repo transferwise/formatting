@@ -7,11 +7,9 @@ export default function(
   rate,
   sourceCurrency,
   targetCurrency,
-  { lhs = 'auto', lhsMultiplier = null } = {},
+  { reference = 'auto', referenceMultiplier = null } = {},
 ) {
-  if (!sourceCurrency || !targetCurrency) {
-    return undefined;
-  }
+  validateParameters();
 
   let equation = {
     lhsCurrency: sourceCurrency,
@@ -20,51 +18,64 @@ export default function(
     rhsValue: rate,
   };
 
-  equation = invertEquationIfNeeded(equation, lhs, config);
-  const multiplier = getMultiplier(equation, lhsMultiplier, config);
-  equation = multiplyEquation(equation, multiplier);
+  if (shouldInvertEquation()) {
+    equation = invertEquation();
+  }
+  equation = multiplyEquation(getMultiplier());
   return format(equation);
-}
 
-function format({ lhsValue, lhsCurrency, rhsValue, rhsCurrency }) {
-  return `${formatAmount(lhsValue, lhsCurrency)} ${lhsCurrency} = ${formatRate(
-    rhsValue,
-  )} ${rhsCurrency}`;
-}
-
-function invertEquationIfNeeded(equation, lhs, config) {
-  if (
-    lhs === 'target' ||
-    (lhs !== 'source' &&
-      config[equation.lhsCurrency] &&
-      config[equation.lhsCurrency].hasInversionEnabled)
-  ) {
-    const invertedEquation = { ...equation };
-    invertedEquation.lhsCurrency = equation.rhsCurrency;
-    invertedEquation.rhsCurrency = equation.lhsCurrency;
-    invertedEquation.rhsValue = 1 / equation.rhsValue;
-    return invertedEquation;
+  function validateParameters() {
+    if (!rate || !sourceCurrency || !targetCurrency) {
+      throw new Error('Parameters rate, sourceCurrency and targetCurrency are mandatory');
+    }
+    if (reference && ['auto', 'source', 'target'].indexOf(reference) === -1) {
+      throw new Error('Invalid reference value received. Valid values are auto, source, target');
+    }
+    if (referenceMultiplier && typeof referenceMultiplier !== 'number') {
+      throw new Error('referrenceMultiplier must be a number');
+    }
   }
-  return equation;
-}
 
-function getMultiplier(equation, lhsMultiplier, config) {
-  let multiplier = DEFAULT_RATE_MULTIPLIER;
-
-  // apply multiplier from configuration
-  if (config[equation.lhsCurrency] && config[equation.lhsCurrency].multiplierForEquation) {
-    multiplier = config[equation.lhsCurrency].multiplierForEquation;
+  function shouldInvertEquation() {
+    return (
+      reference === 'target' ||
+      (reference !== 'source' &&
+        config[equation.lhsCurrency] &&
+        config[equation.lhsCurrency].hasInversionEnabled)
+    );
   }
-  // Override the config multiplier with incoming lhs multiplier
-  if (lhsMultiplier) {
-    multiplier = lhsMultiplier;
-  }
-  return multiplier;
-}
 
-function multiplyEquation(equation, multiplier) {
-  const multipliedEquation = { ...equation };
-  multipliedEquation.lhsValue = multiplier * equation.lhsValue;
-  multipliedEquation.rhsValue = multiplier * equation.rhsValue;
-  return multipliedEquation;
+  function invertEquation() {
+    return {
+      ...equation,
+      lhsCurrency: equation.rhsCurrency,
+      rhsCurrency: equation.lhsCurrency,
+      rhsValue: 1 / equation.rhsValue,
+    };
+  }
+
+  function getMultiplier() {
+    if (referenceMultiplier) {
+      return referenceMultiplier;
+    }
+
+    if (config[equation.lhsCurrency] && config[equation.lhsCurrency].multiplierForEquation) {
+      return config[equation.lhsCurrency].multiplierForEquation;
+    }
+    return DEFAULT_RATE_MULTIPLIER;
+  }
+
+  function multiplyEquation(multiplier) {
+    return {
+      ...equation,
+      lhsValue: equation.lhsValue * multiplier,
+      rhsValue: equation.rhsValue * multiplier,
+    };
+  }
+
+  function format({ lhsValue, lhsCurrency, rhsValue, rhsCurrency }) {
+    return `${formatAmount(lhsValue, lhsCurrency)} ${lhsCurrency} = ${formatRate(
+      rhsValue,
+    )} ${rhsCurrency}`;
+  }
 }
