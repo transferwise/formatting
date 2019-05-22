@@ -39,41 +39,68 @@ console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB *
 
 ### Rate formatting
 
-`formatRate` is to format the exchange rates with six significant figure accuracy. It also accepts the  `sourceCurrency` and `targetCurrency` parameters.
+### 1. formatRate(rate)
+```js
+formatRate(0.08682346801) === "0.0868234"
+```
 
-If the `sourceCurrency` is in the list of [RateInversionEnabledCurrencies](src/rate/rateInversionEnabledCurrencies.json) and also the exchange rate is below the threshold(0.30), then it will format the exchange rate in the inverted format.(For example: 1 USD = 112.359 JPY)
+The existing formatter. **Always guaranteed to return a string that's parseable as a number.** Old clients can continue to use it as it is. Technically they might see a "breaking change" in the form of switching from 5d.p. to 6s.f., but we also want to include this optional change, because we believe that it'll practically improve things across the board, yet not make anything worse.
 
-```javascript
-import { formatRate } from '@transferwise/formatting';
+### 2. formatRateAsEquation(rate, sourceCurrency, targetCurrency, options)
+**Always guaranteed to return an equation string.** The options are:
 
-console.log(formatRate(0.7658, 'USD', 'GBP'));
-// '0.765800'
+```
+options = {
+  reference: one of 'auto' (default), 'source', or 'target'
+  referenceMultiplier: a number (1 by default, 10 100 1000 etc. are typical alternatives),
+}
+```
 
-console.log(formatRate(0.0089, 'JPY', 'USD'));
-// --> '1 USD = 112.359 JPY'
+You can think of **reference** being synonymous with the left-hand side of the equation pretty much. These outputs are all possible outputs from this method:
 
-console.log(formatRate(0.1954, 'BRL', 'GBP'));
-// --> '1 GBP = 5.11771 BRL'
+(assuming sending from-VND)
+- `1 VND = 0.0000332345 GBP`
+- `100,000 VND = 3.32345 GBP` (multiplied)
+- `1 GBP = 30,382.67 VND` (inverted)
+- `100 HUF = 8,080.73 VND` (inverted and multiplied)
 
-/* To override the number of significant digits used in formatting */
-console.log(formatRate(0.7658, 'USD', 'GBP', { numberOfSignificantDigits: 5 }));
-// '0.76580'
+Furthermore, depending on what you set (or didn't set) in `options`, it would mean you could either let the formatter decide whether to invert and/or multiply, or override a particular choice yourself if necessary.
 
-console.log(formatRate(0.1954, 'BRL', 'GBP', { numberOfSignificantDigits: 5 }));
-// --> '1 GBP = 5.1177 BRL'
+We believe these 2 direct formatters should be useful for clients which needs control over the output if needed.
 
-console.log(formatRate(0.1954, 'BRL', 'GBP', { skipInversion: true }));
-// --> '0.195400'
+## Higher-level format picker
 
-/* Deprecated: Clients are discouraged to pass only the `exchange rate`.
-Pass the `sourceCurrency` and `targetCurrency` parameters wherever possible. */
-console.log(formatRate(1.23456789));
-// --> '1.23457'
-console.log(formatRate(1.23));
-// --> '1.23000'
+### 3. getRateInAllFormats(rate, sourceCurrency, targetCurrency, options)
 
-console.log(formatRate(0.002));
-// --> '0.00200000'
+This takes the exact same parameters as `formatRateAsEquation`, and chooses whether we should be using an equationstring or a numberstring. Practically, it will choose a numberstring only in 1 specific case when both these conditions are true:
+
+1. The reference currency happens to be the source currency, and
+2. The multiplier happens to be one
+
+(It just happens that this specific case is also the majority case nowadays)
+
+In addition, its output is not a string, but an object:
+
+```js
+// output from getRateInAllFormats
+{
+  "default": { // Default format suggested based on the currency configuration
+    "format": "equation", // one from the values of `equation` and `decimal`
+    "output": "1 USD = 434.783 BRL",
+   },
+   "formats": { // Contains both decimal and equation formats, for clients need specific formats.
+     "decimal": {
+       "output": "0.00230000", // Equivalent to the output of formatRate(rate)
+       "significantFigures": 6,
+     },
+     "equation": {
+       "output": "1 USD = 434.783 BRL", // formats the rate as equation
+       "isInverted": true,
+       "rateInDecimal": "434.783", // formatted rate in the equation.
+       "rateMultiplier": 1, // Multiplier used in the equation
+     },
+   }
+}
 ```
 
 ### Percentage formatting
