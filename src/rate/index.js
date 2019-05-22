@@ -1,2 +1,3 @@
 export * from './formatRate';
-export * from './formatRateAsEquation';
+export { formatRateAsEquation } from './formatRateAsEquation';
+export * from './getRateInAllFormats';

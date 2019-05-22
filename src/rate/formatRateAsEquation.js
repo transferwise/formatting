@@ -3,7 +3,7 @@ import { formatAmount } from '../currency';
 import config from './config';
 import { DEFAULT_RATE_MULTIPLIER } from '../defaults';
 
-export function formatRateAsEquation(
+export function getRateEquation(
   rate,
   sourceCurrency,
   targetCurrency,
@@ -21,8 +21,7 @@ export function formatRateAsEquation(
   if (shouldInvertEquation()) {
     equation = invertEquation();
   }
-  equation = multiplyEquation(getMultiplier());
-  return format(equation);
+  return multiplyEquation(getMultiplier());
 
   function validateParameters() {
     if (!rate || !sourceCurrency || !targetCurrency) {
@@ -32,7 +31,7 @@ export function formatRateAsEquation(
       throw new Error('Invalid reference value received. Valid values are auto, source, target');
     }
     if (referenceMultiplier && typeof referenceMultiplier !== 'number') {
-      throw new Error('referrenceMultiplier must be a number');
+      throw new Error('referenceMultiplier must be a number');
     }
   }
 
@@ -72,10 +71,21 @@ export function formatRateAsEquation(
       rhsValue: equation.rhsValue * multiplier,
     };
   }
+}
 
-  function format({ lhsValue, lhsCurrency, rhsValue, rhsCurrency }) {
-    return `${formatAmount(lhsValue, lhsCurrency)} ${lhsCurrency} = ${formatRate(
-      rhsValue,
-    )} ${rhsCurrency}`;
-  }
+export function formatRateAsEquation(
+  rate,
+  sourceCurrency,
+  targetCurrency,
+  { reference = 'auto', referenceMultiplier = null } = {},
+) {
+  const { lhsValue, lhsCurrency, rhsValue, rhsCurrency } = getRateEquation(
+    rate,
+    sourceCurrency,
+    targetCurrency,
+    { reference, referenceMultiplier },
+  );
+  return `${formatAmount(lhsValue, lhsCurrency)} ${lhsCurrency} = ${formatRate(
+    rhsValue,
+  )} ${rhsCurrency}`;
 }
