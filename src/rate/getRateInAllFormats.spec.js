@@ -29,7 +29,7 @@ describe('Get Rate In All Formats', () => {
   });
 
   it('returns default output and other formats', () => {
-    const formats = getRateInAllFormats(0.0023, 'BRL', 'USD').formats;
+    const { formats } = getRateInAllFormats(0.0023, 'BRL', 'USD');
     expect(formats.equation).toEqual({
       output: '1 USD = 434.783 BRL',
       isInverted: true,
