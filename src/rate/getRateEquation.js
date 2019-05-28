@@ -1,9 +1,7 @@
-import { formatRate } from './formatRate';
-import { formatAmount } from '../currency';
 import config from './config';
 import { DEFAULT_RATE_MULTIPLIER } from '../defaults';
 
-export function getRateEquation(
+export default function(
   rate,
   sourceCurrency,
   targetCurrency,
@@ -71,21 +69,4 @@ export function getRateEquation(
       rhsValue: equation.rhsValue * multiplier,
     };
   }
-}
-
-export function formatRateAsEquation(
-  rate,
-  sourceCurrency,
-  targetCurrency,
-  { reference = 'auto', referenceMultiplier = null } = {},
-) {
-  const { lhsValue, lhsCurrency, rhsValue, rhsCurrency } = getRateEquation(
-    rate,
-    sourceCurrency,
-    targetCurrency,
-    { reference, referenceMultiplier },
-  );
-  return `${formatAmount(lhsValue, lhsCurrency)} ${lhsCurrency} = ${formatRate(
-    rhsValue,
-  )} ${rhsCurrency}`;
 }

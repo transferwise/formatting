@@ -1,4 +1,4 @@
-import { getRateInAllFormats } from './getRateInAllFormats';
+import getRateInAllFormats from './getRateInAllFormats';
 
 jest.mock('./config', () => ({
   BRL: { hasInversionEnabled: true },

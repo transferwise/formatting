@@ -1,6 +1,6 @@
 import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS } from '../defaults';
 
-export function formatRate(
+export default function(
   rate,
   { numberOfSignificantDigits = NUMBER_OF_RATE_SIGNIFICANT_DIGITS } = {},
 ) {

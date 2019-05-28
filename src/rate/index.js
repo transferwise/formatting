@@ -1,2 +1,2 @@
-export * from './formatRate';
-export * from './getRateInAllFormats';
+export { default as formatRate } from './formatRate';
+export { default as getRateInAllFormats } from './getRateInAllFormats';

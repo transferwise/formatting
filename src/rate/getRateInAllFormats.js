@@ -1,8 +1,9 @@
-import { formatRate } from './formatRate';
 import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, DEFAULT_RATE_MULTIPLIER } from '../defaults';
-import { formatRateAsEquation, getRateEquation } from './formatRateAsEquation';
+import formatRate from './formatRate';
+import formatRateEquation from './formatRateEquation';
+import getRateEquation from './getRateEquation';
 
-export function getRateInAllFormats(
+export default function(
   rate,
   sourceCurrency,
   targetCurrency,
@@ -24,10 +25,7 @@ export function getRateInAllFormats(
   });
 
   response.formats.equation = {
-    output: formatRateAsEquation(rate, sourceCurrency, targetCurrency, {
-      reference,
-      referenceMultiplier,
-    }),
+    output: formatRateEquation(equation),
     isInverted: equation.lhsCurrency !== sourceCurrency,
     rateMultiplier: equation.lhsValue,
     rateInDecimal: formatRate(equation.rhsValue),
