@@ -1,3 +1,6 @@
+# v1.6.0
+## Add ability to format rate for weaker currencies in inverted form.
+
 # v1.5.0
 ## Add ability to format currencies with alwaysShowDecimals option
 
