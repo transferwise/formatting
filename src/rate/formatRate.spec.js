@@ -9,8 +9,8 @@ describe('Rate formatting', () => {
   });
 
   it('formats rate given significant figures', () => {
-    expect(formatRate(1.23, { numberOfSignificantDigits: 5 })).toBe('1.2300');
-    expect(formatRate(111.23, { numberOfSignificantDigits: 7 })).toBe('111.2300');
-    expect(formatRate(0.000273, { numberOfSignificantDigits: 3 })).toBe('0.000273');
+    expect(formatRate(1.23, { significantFigures: 5 })).toBe('1.2300');
+    expect(formatRate(111.23, { significantFigures: 7 })).toBe('111.2300');
+    expect(formatRate(0.000273, { significantFigures: 3 })).toBe('0.000273');
   });
 });

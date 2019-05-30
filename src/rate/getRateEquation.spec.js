@@ -6,7 +6,7 @@ jest.mock('./config', () => ({
   IDR: { multiplierForEquation: 10000 },
 }));
 
-describe('Get Rate Equation', () => {
+describe('Get rate equation', () => {
   it('returns equation without inversion or multiplication', () => {
     expect(getRateEquation(0.0023, 'VND', 'USD')).toEqual({
       lhsCurrency: 'VND',
