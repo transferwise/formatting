@@ -1,5 +1,10 @@
+# v1.7.0
+## Tweak rate formatter API for easier usage
+
 # v1.6.0
 ## Add ability to format rate for weaker currencies in inverted form.
+
+Superseded by v1.7.0, please use that instead.
 
 # v1.5.0
 ## Add ability to format currencies with alwaysShowDecimals option
