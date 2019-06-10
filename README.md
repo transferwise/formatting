@@ -93,7 +93,7 @@ Here's an example of the entire object that's returned from calling `getRateInAl
 }
 ```
 
-An optional `options` object can be passed as the last argument. Available options are:
+An optional `options` object can be passed as the last argument to `getRateInAllFormats`. Available options are:
 
 Option | Default | Allowed | Description
 -- | -- | -- | --
@@ -101,7 +101,7 @@ Option | Default | Allowed | Description
 `referenceMultiplier` | Depends on currency, but usually 1 | Any number, but typically 1, 10, 100, 1000, etc. | Controls the amount of the left-hand reference currency. Currency norms for the default are [configured here](./src/rate/config.js).
 `significantFigures` | 6 | Any positive integer | Controls the displayed precision of calculated values.
 
-Thus, depending on your needs, it's possible to get your rate in any of this formats:
+Thus, depending on your needs, it's possible to get your rate in any of these formats:
 
 _(Assume a from-VND transfer)_
 
@@ -114,14 +114,16 @@ _(Assume a from-VND transfer)_
 
 _**When does `getRateInAllFormats` suggest a decimal format, and when does it suggest an equation format?**_
 
-Keep in mind that historically before `getRateInAllFormats` existed, we were always showing the rate as a 1-source-unit-to-target decimal. Then, because that ended up in inscrutable rates when the source currency was tiny relative to the target (e.g. how does a customer work with `0.0000332345`?), we introduced `getRateInAllFormats` to provide an alternative presentation in pairs where the existing decimal was not working out.
+Keep in mind that historically before `getRateInAllFormats` existed, we were always showing the rate as a 1-source-unit-to-target decimal.
+
+Then, because that ended up in inscrutable rates when the source currency was tiny relative to the target (e.g. how does a customer work with `0.0000332345`?), we introduced `getRateInAllFormats` to provide an alternative presentation in pairs where the existing decimal was not working out.
 
 With that in mind, to preserve the old behaviour for typical currencies, `getRateInAllFormats` will therefore continue to suggest the decimal format in the 1-source-unit-to-target scenario. In other words, when:
 
 1. the resulting `reference` is `'source'` (whether calculated by currency norms, or explicitly overriden by the user), and
 2. the resulting `referenceMultiplier` is 1 (whether calculated by currency norms, or explicitly overriden by the user)
 
-If at least 1 of this conditions is not true, then it will suggest the equation format.
+If at least 1 of these conditions are not true, then it will suggest the equation format.
 
 ### Percentage formatting
 
