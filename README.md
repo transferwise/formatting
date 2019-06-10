@@ -96,7 +96,7 @@ Here's an example of the entire object that's returned from calling `getRateInAl
 An optional `options` object can be passed as the last argument. Available options are:
 
 Option | Default | Allowed | Description
-- | - | - | -
+-- | -- | -- | --
 `reference` | 'auto' | one of 'auto', 'source', or 'target' | Control which currency appears on the left-hand side as the reference. If 'auto' (the default), it will rely on currency norms [configured here](./src/rate/config.js).
 `referenceMultiplier` | Depends on currency, but usually 1 | Any number, but typically 1, 10, 100, 1000, etc. | Controls the amount of the left-hand reference currency. Currency norms for the default are [configured here](./src/rate/config.js).
 `significantFigures` | 6 | Any positive integer | Controls the displayed precision of calculated values.
