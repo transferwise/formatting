@@ -3,7 +3,7 @@
 
 ### How to migrate from v1 to v2
 
-Do you use `getRateInAllFormats(...)`?
+Do you use `getRateInAllFormats(...)` (introduced in v1.6.0)?
 
 - **No** -> Nothing to do, upgrading is safe and will not break anything.
 - **Yes** -> `getRateInAllFormat(...)`'s response has some renamed properties, check https://github.com/transferwise/formatting/pull/22#issue-283516357.
