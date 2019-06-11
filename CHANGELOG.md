@@ -1,10 +1,15 @@
-# v1.7.0
-## Tweak rate formatter API for easier usage
+# v2.0.0
+## Change rate formatter API for easier usage
+
+### How to migrate from v1 to v2
+
+Do you use `getRateInAllFormats(...)`?
+
+- **No** -> Nothing to do, upgrading is safe and will not break anything.
+- **Yes** -> `getRateInAllFormat(...)`'s response has some renamed properties, check https://github.com/transferwise/formatting/pull/22#issue-283516357.
 
 # v1.6.0
 ## Add ability to format rate for weaker currencies in inverted form.
-
-Superseded by v1.7.0, please use that instead.
 
 # v1.5.0
 ## Add ability to format currencies with alwaysShowDecimals option

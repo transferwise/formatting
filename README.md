@@ -39,7 +39,7 @@ console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB *
 
 ### Rate formatting
 
-#### formatRate(rate, options)
+#### formatRate(rate, [options])
 ```js
 formatRate(0.08682346801) === "0.0868235"
 formatRate(0.08682346801, {significantFigures: 8}) === "0.086823468"
@@ -51,7 +51,7 @@ This is a dumb, low-level formatter for just the rate number value, and it's kep
 
 At the moment the only configurable option is `significantFigures`, you can set it if you don't like the default of 6 significant figures.
 
-#### getRateInAllFormats(rate, sourceCurrency, targetCurrency, options)
+#### getRateInAllFormats(rate, sourceCurrency, targetCurrency, [options])
 
 ```js
 const rateFormats = getRateInAllFormats(0.00230, 'BRL', 'USD');
@@ -114,16 +114,12 @@ _(Assume a from-VND transfer)_
 
 _**When does `getRateInAllFormats` suggest a decimal format, and when does it suggest an equation format?**_
 
-Keep in mind that historically before `getRateInAllFormats` existed, we were always showing the rate as a 1-source-unit-to-target decimal.
-
-Then, because that ended up in inscrutable rates when the source currency was tiny relative to the target (e.g. how does a customer work with `0.0000332345`?), we introduced `getRateInAllFormats` to provide an alternative presentation in pairs where the existing decimal was not working out.
-
-With that in mind, to preserve the old behaviour for typical currencies, `getRateInAllFormats` will therefore continue to suggest the decimal format in the 1-source-unit-to-target scenario. In other words, when:
+To avoid changing the behaviour of many existing currency pairs, `getRateInAllFormats` will suggest the decimal format (which is what we've historically shown) when:
 
 1. the resulting `reference` is `'source'` (whether calculated by currency norms, or explicitly overriden by the user), and
 2. the resulting `referenceMultiplier` is 1 (whether calculated by currency norms, or explicitly overriden by the user)
 
-If at least 1 of these conditions are not true, then it will suggest the equation format.
+These 2 conditions will typically be true for "strong" source currencies like GBP, EUR, USD, AUD, SGD, etc. If at least 1 of these conditions are not true, then it will suggest the equation format.
 
 ### Percentage formatting
 
