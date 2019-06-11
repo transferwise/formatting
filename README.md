@@ -39,65 +39,87 @@ console.log(formatMoney(1234.56, 'EUR', 'en-GB' /* Optional, defaults to en-GB *
 
 ### Rate formatting
 
-### 1. formatRate(rate)
+#### formatRate(rate, [options])
 ```js
-formatRate(0.08682346801) === "0.0868234"
+formatRate(0.08682346801) === "0.0868235"
+formatRate(0.08682346801, {significantFigures: 8}) === "0.086823468"
 ```
 
-The existing formatter. **Always guaranteed to return a string that's parseable as a number.** Old clients can continue to use it as it is. Technically they might see a "breaking change" in the form of switching from 5 decimal points to 6 significant figures, but we also want to include this optional change, because we believe that it'll practically improve things across the board, yet not make anything worse.
+Limits a rate to a certain amount of precision for display (6 significant figures by default). It will always return a numberstring (string that's parseable as a number).
 
-### 2. getRateInAllFormats(rate, sourceCurrency, targetCurrency, options)
+This is a dumb, low-level formatter for just the rate number value, and it's kept around mostly for older implementations. For typical rate display purposes, you may instead wish to make use of `getRateInAllFormats`, because it can suggest showing the rate inverted and/or multiplied if it makes sense for that currency pair.
+
+At the moment the only configurable option is `significantFigures`, you can set it if you don't like the default of 6 significant figures.
+
+#### getRateInAllFormats(rate, sourceCurrency, targetCurrency, [options])
 
 ```js
-getRateInAllFormats(0.00230, 'BRL', 'USD', {}) === {
-  // Default format suggested based on the currency configuration and/or options passed
-  "default": {
+const rateFormats = getRateInAllFormats(0.00230, 'BRL', 'USD');
+
+// For countries with small-value currencies like BRL/JPY/INR, residents typically prefer the rate quoted with the target currency as the reference if it's stronger. E.g. Brazilians want to know how much BRL is 1 USD, rather than how much USD is 1 BRL.
+
+// A format that's appropriate for the currency pair will be suggested.
+rateFormats.formats[suggested.format].output // "1 USD = 434.783 BRL"
+// or simply...
+rateFormats.suggested.output // "1 USD = 434.783 BRL"
+
+// If you always want the equation format...
+rateFormats.formats.equation.output // "1 USD = 434.783 BRL"
+// If you always want the source-to-target number format (identical to formatRate(rate))...
+rateFormats.formats.decimal.output  // "0.00230000"
+```
+
+Here's an example of the entire object that's returned from calling `getRateInAllFormats`:
+
+```js
+{
+  "suggested": {
     "format": "equation", // either `equation` or `decimal`
     "output": "1 USD = 434.783 BRL",
-   },
+  },
 
-   "formats": {
-     "decimal": {
-       "output": "0.00230000", // Equivalent to the output of formatRate(rate)
-       "significantFigures": 6,
-     },
-     "equation": {
-       "output": "1 USD = 434.783 BRL",
-       "isInverted": true,
-       "rateInDecimal": "434.783", // formatted rate in the equation.
-       "rateMultiplier": 1,
-     },
-   }
+  "formats": {
+    "decimal": {
+      "output": "0.00230000", // Equivalent to the output of formatRate(rate)
+      "significantFigures": 6,
+    },
+    "equation": {
+      "output": "1 USD = 434.783 BRL",
+      "reference": "target", // a.k.a. which currency is the left-hand side.
+      "referenceMultiplier": 1 // a.k.a. left-hand anchor value.
+      "calculationInDecimal": "434.783", // a.k.a. right-hand value.
+    }
+  }
 }
 ```
-The options are below:
-```js
-options = {
-  reference: one of 'auto' (default), 'source', or 'target'
-  referenceMultiplier: a number (1 by default, 10 100 1000 etc. are typical alternatives),
-}
-```
-> You can think of **reference** being synonymous with the left-hand side of the equation pretty much.
 
-This method chooses whether we should be using an equationstring or a numberstring.
+An optional `options` object can be passed as the last argument to `getRateInAllFormats`. Available options are:
 
-##### Number Format
-Practically, it will choose a numberstring only in 1 specific case when both these conditions are true:
+Option | Default | Allowed | Description
+-- | -- | -- | --
+`reference` | 'auto' | one of 'auto', 'source', or 'target' | Control which currency appears on the left-hand side as the reference. If 'auto' (the default), it will rely on currency norms [configured here](./src/rate/config.js).
+`referenceMultiplier` | Depends on currency, but usually 1 | Any number, but typically 1, 10, 100, 1000, etc. | Controls the amount of the left-hand reference currency. Currency norms for the default are [configured here](./src/rate/config.js).
+`significantFigures` | 6 | Any positive integer | Controls the displayed precision of calculated values.
 
-1. The `reference` currency happens to be the **source** currency *(ie: `hasInversionEnabled` is not set for `sourceCurrency` in [config.js](./src/rate/config.js) or `reference` option passed is not `target`), and*
-2. The `referenceMultiplier` happens to be **one.** *(ie: `multiplierForEquation` is not set for  `sourceCurrency` in [config.js](./src/rate/config.js) or `referenceMultiplier` option passed is equal than `1`)*
+Thus, depending on your needs, it's possible to get your rate in any of these formats:
 
-(It just happens that this specific case is also the majority case nowadays)
+_(Assume a from-VND transfer)_
 
-##### Equation Format
-These outputs are all possible equation outputs from this method: (assuming sending from-VND)
+- `"1 VND = 0.0000332345 GBP"` (equation)
+- `"100,000 VND = 3.32345 GBP"` (multiplied equation)
+- `"1 GBP = 30,382.67 VND"` (target-reference a.k.a. inverted equation)
+- `"100 HUF = 8,080.73 VND"` (inverted and multiplied equation)
+- `"0.0000332345"` (decimal)
+- `"30,382.67"` (inverted decimal)
 
-- `1 VND = 0.0000332345 GBP`
-- `100,000 VND = 3.32345 GBP` (multiplied)
-- `1 GBP = 30,382.67 VND` (inverted)
-- `100 HUF = 8,080.73 VND` (inverted and multiplied)
+_**When does `getRateInAllFormats` suggest a decimal format, and when does it suggest an equation format?**_
 
-Furthermore, depending on what you pass (or didn't pass) in `options` and currency specific configuration from [config.js](./src/rate/config.js), it would mean you could either let the formatter decide whether to invert and/or multiply, or override a particular choice yourself if necessary.
+To avoid changing the behaviour of many existing currency pairs, `getRateInAllFormats` will suggest the decimal format (which is what we've historically shown) when:
+
+1. the resulting `reference` is `'source'` (whether calculated by currency norms, or explicitly overriden by the user), and
+2. the resulting `referenceMultiplier` is 1 (whether calculated by currency norms, or explicitly overriden by the user)
+
+These 2 conditions will typically be true for "strong" source currencies like GBP, EUR, USD, AUD, SGD, etc. If at least 1 of these conditions are not true, then it will suggest the equation format.
 
 ### Percentage formatting
 
