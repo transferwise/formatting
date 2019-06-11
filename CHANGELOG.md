@@ -6,7 +6,7 @@
 Do you use `getRateInAllFormats(...)` (introduced in v1.6.0)?
 
 - **No** -> Nothing to do, upgrading is safe and will not break anything.
-- **Yes** -> `getRateInAllFormat(...)`'s response has some renamed properties, check https://github.com/transferwise/formatting/pull/22#issue-283516357.
+- **Yes** -> `getRateInAllFormats(...)`'s response has some renamed properties, check https://github.com/transferwise/formatting/pull/22#issue-283516357.
 
 # v1.6.0
 ## Add ability to format rate for weaker currencies in inverted form.
