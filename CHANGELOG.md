@@ -1,3 +1,6 @@
+# v2.0.1
+## Rewrite getRateEquation to avoid a minification bug breaking getRateInAllFormats
+
 # v2.0.0
 ## Change rate formatter API for easier usage
 
