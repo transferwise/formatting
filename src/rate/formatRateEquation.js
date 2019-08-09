@@ -1,5 +1,5 @@
 import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, DEFAULT_LOCALE } from '../defaults';
-import { formatNumberToSignificance } from '../number';
+import { formatNumberToSignificantDigits } from '../number';
 import { formatAmount } from '../currency';
 
 export default function(
@@ -11,7 +11,7 @@ export default function(
     lhsValue,
     lhsCurrency,
     locale,
-  )} ${lhsCurrency} = ${formatNumberToSignificance(
+  )} ${lhsCurrency} = ${formatNumberToSignificantDigits(
     rhsValue,
     locale,
     significantFigures,

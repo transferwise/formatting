@@ -75,7 +75,11 @@ function formatNumberWithFallback(number, precision, precisionType) {
  * @param {String} locale
  * @returns {String}
  */
-export function formatNumberToSignificance(number, locale = DEFAULT_LOCALE, significantDigits) {
+export function formatNumberToSignificantDigits(
+  number,
+  locale = DEFAULT_LOCALE,
+  significantDigits,
+) {
   return formatNumber(number, locale, significantDigits, SIGNIFICANT_DIGITS.TYPE);
 }
 

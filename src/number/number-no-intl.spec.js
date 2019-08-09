@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE } from '../defaults';
-import { formatNumber, formatNumberToSignificance } from './number';
+import { formatNumber, formatNumberToSignificantDigits } from './number';
 import * as intl from './feature-detection/intl';
 
 describe('Number formatting, when Intl.NumberFormat is not supported', () => {
@@ -118,12 +118,12 @@ describe('Number formatting, when Intl.NumberFormat is not supported', () => {
       });
 
       it('should format the value with the correct decimals', () => {
-        expect(formatNumberToSignificance(number, locale, precision)).toEqual('1234.500000');
+        expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('1234.500000');
       });
 
       it('should format smaller values with the correct decimals', () => {
         number = '0.025';
-        expect(formatNumberToSignificance(number, locale, precision)).toEqual('0.02500000000');
+        expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('0.02500000000');
       });
     });
   });

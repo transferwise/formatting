@@ -1,5 +1,5 @@
 # v2.1.0
-## Add formatNumberToSignificance to localize rate in getRateEquation
+## Add formatNumberToSignificantDigits to localize rate in getRateEquation
 
 # v2.0.1
 ## Rewrite getRateEquation to avoid a minification bug breaking getRateInAllFormats

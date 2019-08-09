@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE } from '../defaults';
-import { formatNumber, formatNumberToSignificance } from './number';
+import { formatNumber, formatNumberToSignificantDigits } from './number';
 
 describe('Number formatting, when Intl.NumberFormat is supported', () => {
   let number = 123456;
@@ -229,7 +229,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         });
 
         it('should format the value with the expected fixed precision', () => {
-          expect(formatNumberToSignificance(number, locale, precision)).toEqual('1,234.50');
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('1,234.50');
         });
       });
 
@@ -239,7 +239,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         });
 
         it('should format the value with the expected fixed precision', () => {
-          expect(formatNumberToSignificance(number, locale, precision)).toEqual('10.0000');
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('10.0000');
         });
       });
 
@@ -249,7 +249,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         });
 
         it('should format the value with the expected fixed precision', () => {
-          expect(formatNumberToSignificance(number, locale, precision)).toEqual('0.00000');
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('0.00000');
         });
       });
 
@@ -259,7 +259,7 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         });
 
         it('should return null', () => {
-          expect(formatNumberToSignificance(number, locale, precision)).toEqual(null);
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual(null);
         });
       });
     });
