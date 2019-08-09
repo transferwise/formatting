@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE } from '../defaults';
-import { formatNumber } from './number';
+import { formatNumber, formatNumberToSignificance } from './number';
 
 describe('Number formatting, when Intl.NumberFormat is supported', () => {
   let number = 123456;
@@ -213,6 +213,54 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
 
       it('should return null', () => {
         expect(formatNumber(number, locale, precision)).toEqual(null);
+      });
+    });
+  });
+
+  describe('when formatting to significant figures', () => {
+    beforeAll(() => {
+      precision = 6;
+    });
+
+    describe('and a precision is supplied', () => {
+      describe('and given a value with decimals', () => {
+        beforeEach(() => {
+          number = '1234.5';
+        });
+
+        it('should format the value with the expected fixed precision', () => {
+          expect(formatNumberToSignificance(number, locale, precision)).toEqual('1,234.50');
+        });
+      });
+
+      describe('and given a value with no decimals', () => {
+        beforeEach(() => {
+          number = 10;
+        });
+
+        it('should format the value with the expected fixed precision', () => {
+          expect(formatNumberToSignificance(number, locale, precision)).toEqual('10.0000');
+        });
+      });
+
+      describe('and given a zero value', () => {
+        beforeEach(() => {
+          number = 0;
+        });
+
+        it('should format the value with the expected fixed precision', () => {
+          expect(formatNumberToSignificance(number, locale, precision)).toEqual('0.00000');
+        });
+      });
+
+      describe('and given an undefined value', () => {
+        beforeEach(() => {
+          number = undefined;
+        });
+
+        it('should return null', () => {
+          expect(formatNumberToSignificance(number, locale, precision)).toEqual(null);
+        });
       });
     });
   });

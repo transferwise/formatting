@@ -1,5 +1,9 @@
-import { DEFAULT_LOCALE, MIN_PRECISION, MAX_PRECISION } from '../defaults';
+import { DEFAULT_LOCALE, PRECISION_TYPES } from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
+
+const { SIGNIFICANT_DIGITS, FRACTION_DIGITS } = PRECISION_TYPES;
+const { TYPE: SIGNIFICANT_DIGITS_TYPE } = SIGNIFICANT_DIGITS;
+const { TYPE: FRACTION_DIGITS_TYPE } = FRACTION_DIGITS;
 
 const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatter }
 
@@ -7,10 +11,13 @@ const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatt
  * Returns a formatter for the specified locale and NumberFormatOptions
  * @param {String} locale
  * @param {Intl.NumberFormatOptions} options
+ * @param {String} precisionType - `FractionDigits|SignificantDigits` to differentiate formatters in cache
  * @returns {Intl.NumberFormat}
  */
-function getFormatter(locale, options) {
-  const cacheKey = options ? `${locale}${options.minimumFractionDigits}` : locale;
+function getFormatter(locale, options, precisionType) {
+  const cacheKey = options
+    ? `${locale}${precisionType}${options[`minimum${precisionType}`]}`
+    : locale;
   if (!formatters[cacheKey]) {
     formatters[cacheKey] = options
       ? new Intl.NumberFormat(locale, options)
@@ -23,11 +30,12 @@ function getFormatter(locale, options) {
  * Returns the desired options object for
  * `Number.toLocaleString` and `Intl.NumberFormat` methods
  * @param {Number} precision
+ * @param {String} precisionType - `FractionDigits|SignificantDigits`
  */
-function getPrecisionOptions(precision) {
+function getPrecisionOptions(precision, precisionType) {
   return {
-    minimumFractionDigits: precision,
-    maximumFractionDigits: precision,
+    [`minimum${precisionType}`]: precision,
+    [`maximum${precisionType}`]: precision,
   };
 }
 
@@ -48,14 +56,46 @@ function getValidLocale(locale) {
 }
 
 /**
- * Formats a number precisely with valid fallback even if the
+ * Formats the number as a fallback for when `toLocaleString` method is not supported
+ * by the browser. Will use `toFixed` to format `FractionDigits` precisionType and `toPrecision`
+ * to format `SignificantDigits` precision type.
+ * @param {Number} number
+ * @param {Number} precision - this may be a value between 0 and 20 for `FractionDigits` or 1 and 21 for `SignificantDigits`
+ * @param {String} precisionType - `FractionDigits|SignificantDigits`
+ * @returns {String}
+ */
+function formatNumberWithFallback(number, precision, precisionType) {
+  if (precisionType === SIGNIFICANT_DIGITS_TYPE) return number.toPrecision(precision);
+  return number.toFixed(precision);
+}
+
+/**
+ * Formats a number to a significant number of digits with valid fallback even if the
  * `toLocaleString` method is not supported by the actual browser
  * @param {Number|String} number
- * @param {Number} precision - this may be a value between 0 and 20, inclusive
+ * @param {Number} significantDigits - this may be a value between 1 and 21, inclusive
  * @param {String} locale
  * @returns {String}
  */
-export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
+export function formatNumberToSignificance(number, locale = DEFAULT_LOCALE, significantDigits) {
+  return formatNumber(number, locale, significantDigits, SIGNIFICANT_DIGITS_TYPE);
+}
+
+/**
+ * Formats a number precisely with valid fallback even if the
+ * `toLocaleString` method is not supported by the actual browser
+ * @param {Number|String} number
+ * @param {String} locale
+ * @param {Number} precision - this may be a value between 0 and 20 for `FractionDigits` or 1 and 21 for `SignificantDigits`
+ * @param {String} precisionType - `FractionDigits|SignificantDigits`
+ * @returns {String}
+ */
+export function formatNumber(
+  number,
+  locale = DEFAULT_LOCALE,
+  precision,
+  precisionType = FRACTION_DIGITS_TYPE,
+) {
   if (!number && number !== 0) {
     return null;
   }
@@ -64,6 +104,9 @@ export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
     // eslint-disable-next-line no-param-reassign
     number = Number(number);
   }
+
+  const { MIN_PRECISION, MAX_PRECISION } =
+    precisionType === SIGNIFICANT_DIGITS_TYPE ? SIGNIFICANT_DIGITS : FRACTION_DIGITS;
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed#Parameters
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat#Parameters
@@ -77,11 +120,13 @@ export function formatNumber(number, locale = DEFAULT_LOCALE, precision) {
   const validatedLocale = getValidLocale(locale);
 
   if (!isIntlNumberFormatSupported(validatedLocale)) {
-    return isPrecisionValid ? number.toFixed(precision) : `${number}`;
+    return isPrecisionValid
+      ? formatNumberWithFallback(number, precision, precisionType)
+      : `${number}`;
   }
 
   const formatter = isPrecisionValid
-    ? getFormatter(validatedLocale, getPrecisionOptions(precision))
+    ? getFormatter(validatedLocale, getPrecisionOptions(precision, precisionType), precisionType)
     : getFormatter(validatedLocale);
 
   return formatter.format(number);
