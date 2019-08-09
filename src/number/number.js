@@ -1,9 +1,7 @@
-import { DEFAULT_LOCALE, PRECISION_TYPES } from '../defaults';
+import { DEFAULT_LOCALE, PRECISION } from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
 
-const { SIGNIFICANT_DIGITS, FRACTION_DIGITS } = PRECISION_TYPES;
-const { TYPE: SIGNIFICANT_DIGITS_TYPE } = SIGNIFICANT_DIGITS;
-const { TYPE: FRACTION_DIGITS_TYPE } = FRACTION_DIGITS;
+const { SIGNIFICANT_DIGITS, FRACTION_DIGITS } = PRECISION;
 
 const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatter }
 
@@ -65,7 +63,7 @@ function getValidLocale(locale) {
  * @returns {String}
  */
 function formatNumberWithFallback(number, precision, precisionType) {
-  if (precisionType === SIGNIFICANT_DIGITS_TYPE) return number.toPrecision(precision);
+  if (precisionType === SIGNIFICANT_DIGITS.TYPE) return number.toPrecision(precision);
   return number.toFixed(precision);
 }
 
@@ -78,7 +76,7 @@ function formatNumberWithFallback(number, precision, precisionType) {
  * @returns {String}
  */
 export function formatNumberToSignificance(number, locale = DEFAULT_LOCALE, significantDigits) {
-  return formatNumber(number, locale, significantDigits, SIGNIFICANT_DIGITS_TYPE);
+  return formatNumber(number, locale, significantDigits, SIGNIFICANT_DIGITS.TYPE);
 }
 
 /**
@@ -94,7 +92,7 @@ export function formatNumber(
   number,
   locale = DEFAULT_LOCALE,
   precision,
-  precisionType = FRACTION_DIGITS_TYPE,
+  precisionType = FRACTION_DIGITS.TYPE,
 ) {
   if (!number && number !== 0) {
     return null;
@@ -106,7 +104,7 @@ export function formatNumber(
   }
 
   const { MIN_PRECISION, MAX_PRECISION } =
-    precisionType === SIGNIFICANT_DIGITS_TYPE ? SIGNIFICANT_DIGITS : FRACTION_DIGITS;
+    precisionType === SIGNIFICANT_DIGITS.TYPE ? SIGNIFICANT_DIGITS : FRACTION_DIGITS;
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed#Parameters
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat#Parameters
