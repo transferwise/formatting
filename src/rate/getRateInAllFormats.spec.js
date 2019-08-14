@@ -9,7 +9,7 @@ jest.mock('./config', () => ({
 describe('Get rate in all formats', () => {
   it('returns suggested output as decimal when reference is sourceCurrency and referenceMultiplier is 1', () => {
     expect(getRateInAllFormats(23354.7, 'USD', 'VND').suggested).toEqual({
-      output: '23354.7',
+      output: '23,354.7',
       format: 'decimal',
     });
   });

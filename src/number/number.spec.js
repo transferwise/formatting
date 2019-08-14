@@ -223,6 +223,12 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
     });
 
     describe('and a precision is supplied', () => {
+      it('should format the value with the expected fixed precision', () => {
+        expect(formatNumberToSignificantDigits(1.23, locale, 5)).toBe('1.2300');
+        expect(formatNumberToSignificantDigits(111.23, locale, 7)).toBe('111.2300');
+        expect(formatNumberToSignificantDigits(0.000273, locale, 3)).toBe('0.000273');
+      });
+
       describe('and given a value with decimals', () => {
         beforeEach(() => {
           number = '1234.5';
@@ -261,6 +267,15 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         it('should return null', () => {
           expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual(null);
         });
+      });
+    });
+
+    describe('and a precision is not supplied', () => {
+      it('formats rate using default NUMBER_OF_RATE_SIGNIFICANT_DIGITS', () => {
+        expect(formatNumberToSignificantDigits(1.23, locale)).toBe('1.23000');
+        expect(formatNumberToSignificantDigits(111.23, locale)).toBe('111.230');
+        expect(formatNumberToSignificantDigits(10125.27, locale)).toBe('10,125.3');
+        expect(formatNumberToSignificantDigits(0.000273, locale)).toBe('0.000273000');
       });
     });
   });

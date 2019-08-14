@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, PRECISION } from '../defaults';
+import { DEFAULT_LOCALE, PRECISION, NUMBER_OF_RATE_SIGNIFICANT_DIGITS } from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
 
 const { SIGNIFICANT_DIGITS, FRACTION_DIGITS } = PRECISION;
@@ -78,7 +78,7 @@ function formatNumberWithFallback(number, precision, precisionType) {
 export function formatNumberToSignificantDigits(
   number,
   locale = DEFAULT_LOCALE,
-  significantDigits,
+  significantDigits = NUMBER_OF_RATE_SIGNIFICANT_DIGITS,
 ) {
   return formatNumber(number, locale, significantDigits, SIGNIFICANT_DIGITS.TYPE);
 }
