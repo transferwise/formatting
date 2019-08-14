@@ -15,8 +15,23 @@ console.log(formatNumber(number, 'en-GB' /* Optional, defaults to en-GB */));
 // --> '123,456'
 console.log(formatNumber(number, 'es-ES', 0 /* Optional precision, defaults to 0 */));
 // --> '123.456'
-console.log(formatNumber(number, 'hu-HU'));
+console.log(formatNumber(number, 'hu-HU', 0, 'FractionDigits' /* Optional precision type (FractionDigits or SignificantDigits), defaults to 'FractionDigits' */ ));
 // --> '123 456'
+```
+
+`formatNumberToSignificantDigits` performs the same localization as `formatNumber`, but provides precision to significant digits instead of decimal precision. Used under the hood for localizing rates in `getRateInAllFormats`.
+
+```javascript
+import { formatNumberToSignificantDigits } from '@transferwise/formatting';
+
+const number = 123456;
+
+console.log(formatNumberToSignificantDigits(number, 'en-GB' /* Optional, defaults to en-GB */));
+// --> '123,456'
+console.log(formatNumberToSignificantDigits(number, 'es-ES', 8 /* Optional precision, defaults to 6 */));
+// --> '123.456,00'
+console.log(formatNumberToSignificantDigits(number, 'hu-HU', 8));
+// --> '123 456,00'
 ```
 
 ### Amount formatting
@@ -51,7 +66,7 @@ This is a dumb, low-level formatter for just the rate number value, and it's kep
 
 At the moment the only configurable option is `significantFigures`, you can set it if you don't like the default of 6 significant figures.
 
-#### getRateInAllFormats(rate, sourceCurrency, targetCurrency, [options])
+#### getRateInAllFormats(rate, sourceCurrency, targetCurrency, [options], locale)
 
 ```js
 const rateFormats = getRateInAllFormats(0.00230, 'BRL', 'USD');
@@ -65,7 +80,7 @@ rateFormats.suggested.output // "1 USD = 434.783 BRL"
 
 // If you always want the equation format...
 rateFormats.formats.equation.output // "1 USD = 434.783 BRL"
-// If you always want the source-to-target number format (identical to formatRate(rate))...
+// If you always want the source-to-target number format (identical to formatNumberToSignificantDigits(rate, locale, significantFigures))...
 rateFormats.formats.decimal.output  // "0.00230000"
 ```
 
@@ -80,7 +95,7 @@ Here's an example of the entire object that's returned from calling `getRateInAl
 
   "formats": {
     "decimal": {
-      "output": "0.00230000", // Equivalent to the output of formatRate(rate)
+      "output": "0.00230000", // Equivalent to the output of formatNumberToSignificantDigits(rate, locale, significantFigures)
       "significantFigures": 6,
     },
     "equation": {
@@ -111,6 +126,8 @@ _(Assume a from-VND transfer)_
 - `"100 HUF = 8,080.73 VND"` (inverted and multiplied equation)
 - `"0.0000332345"` (decimal)
 - `"30,382.67"` (inverted decimal)
+
+All outputted strings are localized using the provided `locale` (defaults to `en-GB`).
 
 _**When does `getRateInAllFormats` suggest a decimal format, and when does it suggest an equation format?**_
 
