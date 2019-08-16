@@ -60,8 +60,9 @@ function getValidLocale(locale) {
  * @returns {String}
  */
 function formatNumberWithFallback(number, precision, precisionType) {
-  if (precisionType === SIGNIFICANT_DIGITS.TYPE) return number.toPrecision(precision);
-  return number.toFixed(precision);
+  return precisionType === SIGNIFICANT_DIGITS.TYPE
+    ? number.toPrecision(precision)
+    : number.toFixed(precision);
 }
 
 /**
