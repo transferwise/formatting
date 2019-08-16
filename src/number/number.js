@@ -9,13 +9,10 @@ const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatt
  * Returns a formatter for the specified locale and NumberFormatOptions
  * @param {String} locale
  * @param {Intl.NumberFormatOptions} options
- * @param {String} precisionType - `FractionDigits|SignificantDigits` to differentiate formatters in cache
  * @returns {Intl.NumberFormat}
  */
-function getFormatter(locale, options, precisionType) {
-  const cacheKey = options
-    ? `${locale}${precisionType}${options[`minimum${precisionType}`]}`
-    : locale;
+function getFormatter(locale, options) {
+  const cacheKey = options ? `${locale}${Object.entries(options)}` : locale;
   if (!formatters[cacheKey]) {
     formatters[cacheKey] = options
       ? new Intl.NumberFormat(locale, options)
@@ -128,7 +125,7 @@ export function formatNumber(
   }
 
   const formatter = isPrecisionValid
-    ? getFormatter(validatedLocale, getPrecisionOptions(precision, precisionType), precisionType)
+    ? getFormatter(validatedLocale, getPrecisionOptions(precision, precisionType))
     : getFormatter(validatedLocale);
 
   return formatter.format(number);
