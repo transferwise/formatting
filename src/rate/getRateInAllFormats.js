@@ -1,5 +1,5 @@
-import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS } from '../defaults';
-import formatRate from './formatRate';
+import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, DEFAULT_LOCALE } from '../defaults';
+import { formatNumberToSignificantDigits } from '../number';
 import formatRateEquation from './formatRateEquation';
 import getRateEquation from './getRateEquation';
 
@@ -12,6 +12,7 @@ export default function(
     referenceMultiplier,
     significantFigures = NUMBER_OF_RATE_SIGNIFICANT_DIGITS,
   } = {},
+  locale = DEFAULT_LOCALE,
 ) {
   const response = {
     suggested: {},
@@ -19,7 +20,7 @@ export default function(
   };
 
   response.formats.decimal = {
-    output: formatRate(rate, { significantFigures }),
+    output: formatNumberToSignificantDigits(rate, locale, significantFigures),
     significantFigures,
   };
 
@@ -29,10 +30,14 @@ export default function(
   });
 
   response.formats.equation = {
-    output: formatRateEquation(equation, { significantFigures }),
+    output: formatRateEquation(equation, { significantFigures }, locale),
     reference: equation.lhsCurrency === sourceCurrency ? 'source' : 'target',
     referenceMultiplier: equation.lhsValue,
-    calculationInDecimal: formatRate(equation.rhsValue, { significantFigures }),
+    calculationInDecimal: formatNumberToSignificantDigits(
+      equation.rhsValue,
+      locale,
+      significantFigures,
+    ),
   };
 
   if (equation.lhsCurrency === sourceCurrency && equation.lhsValue === 1) {
