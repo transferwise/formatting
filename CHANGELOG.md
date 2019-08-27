@@ -1,3 +1,6 @@
+# v2.2.0
+## Make formatRate() function localizable
+
 # v2.1.0
 ## Add formatNumberToSignificantDigits to localize rate in getRateEquation
 
