@@ -17,6 +17,31 @@ jobs:
           root: .
           paths:
             - '*'
+  push-and-pull-translations:
+    working_directory: ~/formatting
+    docker:
+      - image: circleci/java:latest
+    steps:
+      - attach_workspace:
+          at: ~/formatting
+      - run:
+          name: Download CrowdIn CLI
+          command: |
+            wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+            sudo dpkg -i crowdin.deb
+      - run:
+          name: Push translations
+          command: crowdin push -b ${CIRCLE_BRANCH}
+      - run:
+          name: Pull translations
+          command: crowdin pull -b ${CIRCLE_BRANCH}
+      - run:
+          name: List files
+          command: ls -l src/translations
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
   test:
     <<: *defaults
     steps:
@@ -62,9 +87,12 @@ workflows:
   build-test-and-release:
     jobs:
       - dependencies
-      - build:
+      - push-and-pull-translations:
           requires:
             - dependencies
+      - build:
+          requires:
+            - push-and-pull-translations
       - test:
           requires:
             - build
