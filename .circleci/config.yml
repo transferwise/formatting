@@ -18,7 +18,9 @@ jobs:
           paths:
             - '*'
   push-and-pull-translations:
-    <<: *defaults
+    working_directory: ~/formatting
+    docker:
+      - image: circleci/java:latest
     steps:
       - attach_workspace:
           at: ~/formatting
