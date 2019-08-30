@@ -25,6 +25,9 @@ jobs:
       - attach_workspace:
           at: ~/formatting
       - run:
+          name: print environment variables
+          command: printenv    
+      - run:
           name: Download CrowdIn CLI
           command: |
             wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
