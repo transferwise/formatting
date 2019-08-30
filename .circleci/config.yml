@@ -37,7 +37,7 @@ jobs:
           command: crowdin pull -b ${CIRCLE_BRANCH}
       - run:
           name: List files
-          command: ls -l translations
+          command: ls -l src/translations
       - persist_to_workspace:
           root: .
           paths:
