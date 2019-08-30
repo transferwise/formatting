@@ -4,6 +4,9 @@
 # production
 /dist
 
+#translations
+**/translations.json
+
 # misc
 .DS_Store
 .env.local
