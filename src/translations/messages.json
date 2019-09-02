@@ -1,1 +1,8 @@
-{}
+{
+  "relative-format-in-seconds": "in seconds",
+  "relative-format-in-minutes": "in {minutes} minutes",
+  "relative-format-in-hours": "in {hours} hours",
+  "relative-format-in-minute": "in 1 minute",
+  "relative-format-in-hour": "in 1 hour",
+  "relative-format-by": "by {formattedDate}"
+}
