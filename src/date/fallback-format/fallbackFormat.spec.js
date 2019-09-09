@@ -53,6 +53,21 @@ describe('Date format fallback', () => {
     expect(getFallbackFormat(date, opts)).toBe('1');
   });
 
+  it('formats MM', () => {
+    const opts = { timeZone: 'UTC', month: 'short' };
+    expect(getFallbackFormat(date, opts)).toBe('Dec');
+  });
+
+  it('formats MM D', () => {
+    const opts = { timeZone: 'UTC', day: true, month: 'short' };
+    expect(getFallbackFormat(date, opts)).toBe('Dec 1');
+  });
+
+  it('formats MM D YYYY', () => {
+    const opts = { timeZone: 'UTC', day: true, month: 'short', year: true };
+    expect(getFallbackFormat(date, opts)).toBe('Dec 1 2018');
+  });
+
   it('works for non-UTC dates', () => {
     date = new Date('2018-12-01');
     const expectedOutput = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
