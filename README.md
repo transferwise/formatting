@@ -172,6 +172,32 @@ formatDate(new Date(), 'en-GB', options);
 formatDate(new Date(), 'en-GB', options);
 ```
 
+### Relative Date formatting
+Formats future dates using a relative description of time, e.g. 'in seconds'.
+A relative description will be used as long as the instant of time being formatted is on the same calendar date as today in the clients timezone and the time is within 12 hours (inclusive). 
+
+```javascript
+import { formatRelativeDate } from '@transferwise/formatting';
+
+console.log(formatRelativeDate(new Date(Date.now() + 1000))); // --> 'in seconds'
+```
+
+| Same Calendar Date | Time Range (inclusive)               | Sample Output                   |
+|--------------------| -------------------------------------|---------------------------------|
+| Yes                | In the past                          | ''                              |
+| Yes                | 00:00:00.000 -> 00:00:59.000         | 'in seconds'                    |
+| Yes                | 00:00:59.001 -> 00:01:00.000         | 'in 1 minute'                   |
+| Yes                | 00:01:00.001 -> 00:02:00.000         | 'in 2 minutes'                  |
+| Yes                | 00:02:00.001 -> 00:58:00.000         | 'in x minutes' (3-58)           |
+| Yes                | 00:58:00.001 -> 00:59:00.000         | 'in 59 minutes'                 |
+| Yes                | 00:59:00.001 -> 01:00:00.000         | 'in 1 hour'                     |
+| Yes                | 01:00:00.001 -> 02:00:00.000         | 'in 2 hours'                    |
+| Yes                | 02:00:00.001 -> 10:00:00.000         | 'in x hours' (3-10)             |
+| Yes                | 10:00:00.001 -> 11:00:00.000         | 'in 11 hours'                   |
+| Yes                | 11:00:00.001 -> 12:00:00.000         | 'in 12 hours'                   |
+| Yes                | 12:00:00.001 -> End of calendar date | 'by Aug 23'                     |
+| No                 | Any                                  | 'by Aug 23'                     |
+
 ## Developing
 
 As usual, `npm install` to install dependencies.

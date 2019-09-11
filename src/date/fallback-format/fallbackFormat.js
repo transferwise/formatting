@@ -1,14 +1,53 @@
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const SHORT_MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+function getJoiningCharacter(options) {
+  return options.month === 'short' ? ' ' : '/';
+}
+
+function isMonthFirst(options) {
+  return options.month === 'short';
+}
+
+function getFormattedMonth(options, isUTC, date) {
+  if (options.month === 'short') {
+    return SHORT_MONTHS[isUTC ? date.getUTCMonth() : date.getMonth()];
+  }
+  return (isUTC ? date.getUTCMonth() : date.getMonth()) + 1;
+}
 
 // Sample outputs: 'Sat, 1/12/2018', '1/12/2018', '12/2018', Sat, 1'
 export function getFallbackFormat(date, options = {}) {
   const isUTC = options.timeZone === 'UTC';
-  let fallbackDate = '';
+
   const dateParts = [];
   if (options.day) dateParts.push(isUTC ? date.getUTCDate() : date.getDate());
-  if (options.month) dateParts.push((isUTC ? date.getUTCMonth() : date.getMonth()) + 1);
+  if (options.month) {
+    const monthFormat = getFormattedMonth(options, isUTC, date);
+    if (isMonthFirst(options)) {
+      dateParts.unshift(monthFormat);
+    } else {
+      dateParts.push(monthFormat);
+    }
+  }
   if (options.year) dateParts.push(isUTC ? date.getUTCFullYear() : date.getUTCFullYear());
-  fallbackDate = dateParts.join('/');
+
+  const joiningCharacter = getJoiningCharacter(options);
+  let fallbackDate = dateParts.join(joiningCharacter);
+
   if (options.weekday) {
     const dayName = WEEKDAYS[isUTC ? date.getUTCDay() : date.getDay()];
     fallbackDate = fallbackDate ? `${dayName}, ${fallbackDate}` : dayName;

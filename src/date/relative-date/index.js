@@ -1,0 +1,1 @@
+export { formatRelativeDate } from './relativeDateFormatter';
