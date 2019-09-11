@@ -1,3 +1,7 @@
+# v2.2.1
+## Translation setup
+Setup crowdin for translations.
+
 # v2.2.0
 ## Make formatRate() function localizable
 
