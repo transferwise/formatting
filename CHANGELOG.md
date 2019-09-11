@@ -1,3 +1,6 @@
+# v2.3.0
+## Add and expose formatRelativeDate() function
+
 # v2.2.1
 ## Translation setup
 Setup crowdin for translations.
