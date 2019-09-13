@@ -1,3 +1,6 @@
+# v2.3.1
+## Bump for new translations
+
 # v2.3.0
 ## Add and expose formatRelativeDate() function
 
