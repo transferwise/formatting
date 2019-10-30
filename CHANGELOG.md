@@ -1,3 +1,6 @@
+# v2.4.0
+## Inverting Rate Format for HUF and RON
+
 # v2.3.2
 ## Bump for new translations
 
