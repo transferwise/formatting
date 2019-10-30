@@ -11,4 +11,10 @@ export default {
   IDR: {
     multiplierForEquation: 10000,
   },
+  HUF: {
+    hasInversionEnabled: true,
+  },
+  RON: {
+    hasInversionEnabled: true,
+  },
 };
