@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/formatting",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A library for formatting things, like dates, currencies, rates and the like.",
   "main": "./dist/formatting.js",
   "scripts": {
@@ -61,7 +61,7 @@
     "prettier": "^1.14.2",
     "prettier-eslint-cli": "^4.7.1",
     "release-to-github-with-changelog": "^1.2.0",
-    "webpack": "^4.17.0",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.1.0"
   }
 }

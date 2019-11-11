@@ -1,3 +1,6 @@
+# v2.4.1
+## Bump Webpack version and fix major dependency vulnerabilities
+
 # v2.4.0
 ## Inverting Rate Format for HUF and RON
 
