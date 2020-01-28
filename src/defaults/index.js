@@ -1,6 +1,6 @@
 export const DEFAULT_LOCALE = 'en-GB';
 export const DEFAULT_PRECISION_TYPE = 'FractionDigits';
-export const NUMBER_OF_RATE_SIGNIFICANT_DIGITS = 6;
+export const NUMBER_OF_RATE_SIGNIFICANT_DIGITS = 5;
 export const DEFAULT_RATE_MULTIPLIER = 1;
 export const PRECISION = {
   SIGNIFICANT_DIGITS: {
