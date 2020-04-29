@@ -1,3 +1,6 @@
+# v2.4.2
+## Bump for new translations
+
 # v2.4.1
 ## Bump Webpack version and fix major dependency vulnerabilities
 
