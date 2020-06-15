@@ -3,6 +3,7 @@
   "version": "2.4.2",
   "description": "A library for formatting things, like dates, currencies, rates and the like.",
   "main": "./dist/formatting.js",
+  "module": "./dist/formatting.module.js",
   "scripts": {
     "precommit": "lint-staged",
     "fallback-translations": "node src/translations/scripts/build-dev-translations.js",
@@ -12,7 +13,7 @@
     "lint": "eslint src",
     "check-format": "prettier-eslint \"src/**/*.js\" --list-different",
     "format": "prettier-eslint \"src/**/*.js\" --write",
-    "build": "npm run compose-translations && webpack -p",
+    "build": "npm run compose-translations && rollup -c -m",
     "check-release-to-github": "release-to-github-with-changelog-pre-release-checks",
     "release-to-github": "release-to-github-with-changelog"
   },
@@ -43,12 +44,14 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "babel-core": "^7.0.0-bridge.0",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@rollup/plugin-babel": "^5.0.2",
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-json": "^4.0.3",
+    "@rollup/plugin-node-resolve": "^8.0.0",
     "babel-jest": "^23.4.2",
-    "babel-loader": "^8.0.0-beta.4",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.0.1",
@@ -61,7 +64,6 @@
     "prettier": "^1.14.2",
     "prettier-eslint-cli": "^4.7.1",
     "release-to-github-with-changelog": "^1.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.1.0"
+    "rollup": "^2.12.1"
   }
 }
