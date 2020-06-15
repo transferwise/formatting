@@ -11,13 +11,9 @@ const external = ['react', 'react-dom', 'prop-types', '@transferwise/components'
 
 // Babel
 const babelrc = false;
-const plugins = [
-  '@babel/plugin-proposal-class-properties',
-  '@babel/plugin-proposal-object-rest-spread',
-  '@babel/plugin-transform-arrow-functions',
-];
-const exclude = 'node_modules/**';
+const plugins = [];
 const presets = [];
+const exclude = 'node_modules/**';
 
 const DEFAULT_BABEL_CONFIG = { babelrc, presets, plugins, exclude };
 
@@ -34,7 +30,7 @@ export default [
       resolve({
         browser: true,
       }),
-      babel({ ...DEFAULT_BABEL_CONFIG, presets: ['@babel/env'].concat(presets) }),
+      babel(DEFAULT_BABEL_CONFIG),
       json(),
       commonjs(),
     ],
