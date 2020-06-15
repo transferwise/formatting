@@ -24,7 +24,10 @@ describe('Rate formatting', () => {
     ).toBe('10,000 IDR = 23.0000 USD');
   });
 
-  it.each([[8, '1 VND = 0.0023000000 USD'], [2, '1 VND = 0.0023 USD']])(
+  it.each([
+    [8, '1 VND = 0.0023000000 USD'],
+    [2, '1 VND = 0.0023 USD'],
+  ])(
     'formats rate equation with configurable (%i) significant figures',
     (significantFigures, expected) => {
       expect(
