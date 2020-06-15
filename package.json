@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/formatting",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "description": "A library for formatting things, like dates, currencies, rates and the like.",
   "main": "./dist/formatting.js",
   "module": "./dist/formatting.module.js",
@@ -45,6 +45,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@rollup/plugin-babel": "^5.0.2",
     "@rollup/plugin-commonjs": "^12.0.0",
