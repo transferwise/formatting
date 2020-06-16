@@ -1,3 +1,6 @@
+# v2.5.0
+## Moving build system to Rollup, enabling module format for the package
+
 # v2.4.2
 ## Bump for new translations
 
