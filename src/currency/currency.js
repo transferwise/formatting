@@ -21,6 +21,9 @@ const currencyDecimals = {
   // technically HUF does have decimals, but due to the exchange rate banks
   // do not accept decimal amounts
   HUF: 0,
+  UGX: 0,
+  // local banks do not consistently support the ideal 2-decimal places fractional part
+  KES: 0,
 
   BHD: 3,
   JOD: 3,
