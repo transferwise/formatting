@@ -1,3 +1,6 @@
+# v2.4.3
+## Adds UGX and KES as currencies with no fractional parts
+
 # v2.4.2
 ## Bump for new translations
 
