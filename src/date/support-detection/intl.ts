@@ -1,15 +1,15 @@
 import { DEFAULT_LOCALE } from '../../defaults';
 
-let intlSupported; // cache
+let intlSupported: boolean | undefined; // cache
 
-export function isIntlSupported() {
+export function isIntlSupported(): boolean {
   if (intlSupported === undefined) {
     intlSupported = intlDateTimeFormatReturnsCorrectValue();
   }
   return intlSupported;
 }
 
-function intlDateTimeFormatReturnsCorrectValue() {
+function intlDateTimeFormatReturnsCorrectValue(): boolean {
   try {
     const date = new Date(2018, 11, 1);
     const dateString = new Intl.DateTimeFormat(DEFAULT_LOCALE).format(date);

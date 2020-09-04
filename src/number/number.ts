@@ -1,9 +1,14 @@
-import { DEFAULT_LOCALE, PRECISION, NUMBER_OF_RATE_SIGNIFICANT_DIGITS } from '../defaults';
+import {
+  DEFAULT_LOCALE,
+  PRECISION,
+  NUMBER_OF_RATE_SIGNIFICANT_DIGITS,
+  PrecisionType,
+} from '../defaults';
 import { isIntlNumberFormatSupported } from './feature-detection';
 
 const { SIGNIFICANT_DIGITS, FRACTION_DIGITS } = PRECISION;
 
-const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatter }
+const formatters: Record<string, any> = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatter }
 
 /**
  * Returns a formatter for the specified locale and NumberFormatOptions
@@ -11,7 +16,7 @@ const formatters = {}; // cache, sample: { 'en-GB': formatter, 'en-GB2': formatt
  * @param {Intl.NumberFormatOptions} options
  * @returns {Intl.NumberFormat}
  */
-function getFormatter(locale, options) {
+function getFormatter(locale: string, options?: Intl.NumberFormatOptions): Intl.NumberFormat {
   const cacheKey = options ? `${locale}${Object.entries(options)}` : locale;
   if (!formatters[cacheKey]) {
     formatters[cacheKey] = options
@@ -27,7 +32,7 @@ function getFormatter(locale, options) {
  * @param {Number} precision
  * @param {String} precisionType - `FractionDigits|SignificantDigits`
  */
-function getPrecisionOptions(precision, precisionType) {
+function getPrecisionOptions(precision: number, precisionType: PrecisionType) {
   return {
     [`minimum${precisionType}`]: precision,
     [`maximum${precisionType}`]: precision,
@@ -39,7 +44,7 @@ function getPrecisionOptions(precision, precisionType) {
  * with `toLocaleString` or otherwise falls back to `DEFAULT_LOCALE`
  * @param {String} locale
  */
-function getValidLocale(locale) {
+function getValidLocale(locale: string) {
   try {
     const noUnderscoreLocale = locale.replace(/_/, '-');
 
@@ -59,7 +64,7 @@ function getValidLocale(locale) {
  * @param {String} precisionType - `FractionDigits|SignificantDigits`
  * @returns {String}
  */
-function formatNumberWithFallback(number, precision, precisionType) {
+function formatNumberWithFallback(number: number, precision: number, precisionType: PrecisionType) {
   return precisionType === SIGNIFICANT_DIGITS.TYPE
     ? number.toPrecision(precision)
     : number.toFixed(precision);
@@ -74,7 +79,7 @@ function formatNumberWithFallback(number, precision, precisionType) {
  * @returns {String}
  */
 export function formatNumberToSignificantDigits(
-  number,
+  number: number,
   locale = DEFAULT_LOCALE,
   significantDigits = NUMBER_OF_RATE_SIGNIFICANT_DIGITS,
 ) {
@@ -91,13 +96,13 @@ export function formatNumberToSignificantDigits(
  * @returns {String}
  */
 export function formatNumber(
-  number,
+  number: number,
   locale = DEFAULT_LOCALE,
-  precision,
-  precisionType = FRACTION_DIGITS.TYPE,
-) {
+  precision?: number,
+  precisionType: PrecisionType = 'FractionDigits',
+): string {
   if (!number && number !== 0) {
-    return null;
+    return '';
   }
 
   if (typeof number === 'string' && Number(number)) {
@@ -121,12 +126,12 @@ export function formatNumber(
 
   if (!isIntlNumberFormatSupported(validatedLocale)) {
     return isPrecisionValid
-      ? formatNumberWithFallback(number, precision, precisionType)
+      ? formatNumberWithFallback(number, precision!, precisionType)
       : `${number}`;
   }
 
   const formatter = isPrecisionValid
-    ? getFormatter(validatedLocale, getPrecisionOptions(precision, precisionType))
+    ? getFormatter(validatedLocale, getPrecisionOptions(precision!, precisionType))
     : getFormatter(validatedLocale);
 
   return formatter.format(number);

@@ -1,18 +1,20 @@
-import { formatDate } from '..';
+import { formatDate } from './date';
 
 import * as intlDetection from './support-detection/intl';
 import * as selectedLocaleDetection from './support-detection/selectedLocale';
 import * as fallback from './fallback-format/fallbackFormat';
 
 describe('Date formatting', () => {
-  let originalDateTimeFormat;
-  let format;
+  let originalDateTimeFormat: any;
+  let format: any;
   const date = new Date();
+  // @ts-expect-error
   fallback.getFallbackFormat = jest.fn().mockReturnValue('lolo');
 
   beforeEach(() => {
     originalDateTimeFormat = Intl.DateTimeFormat;
     format = jest.fn().mockReturnValue('01/12/2018');
+    // @ts-expect-error
     Intl.DateTimeFormat = jest.fn().mockImplementation(() => ({ format }));
   });
 
@@ -22,7 +24,9 @@ describe('Date formatting', () => {
 
   describe('when intl is supported', () => {
     beforeEach(() => {
+      // @ts-expect-error
       intlDetection.isIntlSupported = jest.fn().mockReturnValue(true);
+      // @ts-expect-error
       selectedLocaleDetection.isSelectedLocaleSupported = jest.fn().mockReturnValue(true);
     });
 
@@ -33,13 +37,13 @@ describe('Date formatting', () => {
     });
 
     it('should pass given params to toLocaleDateString', () => {
-      formatDate(date, 'et', { whatever: true });
-      expect(Intl.DateTimeFormat).lastCalledWith('et', { whatever: true });
+      formatDate(date, 'et', { month: 'short' });
+      expect(Intl.DateTimeFormat).lastCalledWith('et', { month: 'short' });
       expect(format).lastCalledWith(date);
     });
 
     it('should cache formatter', () => {
-      const options = { whatever: true };
+      const options = { month: 'short' };
       formatDate(new Date(1990, 1, 1), 'et', options);
       formatDate(new Date(1990, 1, 2), 'et', options);
       expect(Intl.DateTimeFormat).toHaveBeenCalledTimes(1);
@@ -54,7 +58,9 @@ describe('Date formatting', () => {
 
   describe('when intl is supported, but locale is invalid', () => {
     beforeEach(() => {
+      // @ts-expect-error
       intlDetection.isIntlSupported = jest.fn().mockReturnValue(true);
+      // @ts-expect-error
       selectedLocaleDetection.isSelectedLocaleSupported = jest.fn().mockReturnValue(false);
     });
 
@@ -67,6 +73,7 @@ describe('Date formatting', () => {
 
   describe('when intl is not supported', () => {
     beforeEach(() => {
+      // @ts-expect-error
       intlDetection.isIntlSupported = jest.fn().mockReturnValue(false);
     });
 

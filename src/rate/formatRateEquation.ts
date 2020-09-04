@@ -3,7 +3,12 @@ import { formatNumberToSignificantDigits } from '../number';
 import { formatAmount } from '../currency';
 
 export default function(
-  { lhsValue, lhsCurrency, rhsValue, rhsCurrency },
+  {
+    lhsValue,
+    lhsCurrency,
+    rhsValue,
+    rhsCurrency,
+  }: { lhsValue: number; lhsCurrency: string; rhsValue: number; rhsCurrency: string },
   { significantFigures = NUMBER_OF_RATE_SIGNIFICANT_DIGITS } = {},
   locale = DEFAULT_LOCALE,
 ) {

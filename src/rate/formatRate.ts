@@ -2,7 +2,7 @@ import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, DEFAULT_LOCALE } from '../defaults';
 import { formatNumberToSignificantDigits } from '../number';
 
 export default function(
-  rate,
+  rate: number,
   { significantFigures = NUMBER_OF_RATE_SIGNIFICANT_DIGITS } = {},
   locale = DEFAULT_LOCALE,
 ) {

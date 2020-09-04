@@ -76,6 +76,7 @@ describe('relative date formatting', () => {
     describe('should format absolutely when today but > 12 hours away', () => {
       it('with Intl support', () => {
         // setup:
+        // @ts-expect-error
         isIntlSupported.mockReturnValue(true);
 
         // expect:
@@ -84,6 +85,7 @@ describe('relative date formatting', () => {
 
       it('without Intl support', () => {
         // setup:
+        // @ts-expect-error
         isIntlSupported.mockReturnValue(false);
 
         // expect:
@@ -93,6 +95,7 @@ describe('relative date formatting', () => {
 
     it('should format absolutely when not todays date', () => {
       // setup:
+      // @ts-expect-error
       isIntlSupported.mockReturnValue(true);
 
       // expect:
@@ -101,7 +104,7 @@ describe('relative date formatting', () => {
   });
 });
 
-function nowPlusDuration(time, offsetMs = 0) {
+function nowPlusDuration(time: string, offsetMs = 0) {
   const durationInMs = new Date(`1970-01-01T${time}Z`).valueOf();
   return new Date(new Date(NOW).valueOf() + durationInMs + offsetMs);
 }
