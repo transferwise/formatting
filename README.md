@@ -200,5 +200,5 @@ console.log(formatRelativeDate(new Date(Date.now() + 1000))); // --> 'in seconds
 
 ## Developing
 
-As usual, `npm install` to install dependencies.
-Then, use `npm run test:watch` to work with livereloading tests.
+As usual, `yarn install` to install dependencies.
+Then, use `yarn test:watch` to work with live-reloading tests or `yarn dev` for live-reloading type checking.

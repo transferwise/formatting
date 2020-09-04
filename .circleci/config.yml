@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm ci
+          command: yarn
       - persist_to_workspace:
           root: .
           paths:
@@ -49,7 +49,7 @@ jobs:
           at: .
       - run:
           name: Test
-          command: npm test
+          command: yarn test
   build:
     <<: *defaults
     steps:
@@ -57,7 +57,7 @@ jobs:
           at: .
       - run:
           name: Build the project
-          command: npm run build
+          command: yarn build
       - persist_to_workspace:
           root: .
           paths:
@@ -77,10 +77,10 @@ jobs:
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
             git config --global user.name "CircleCI"
-            npm run release-to-github
+            yarn run release-to-github
       - run:
           name: Publish on npm
-          command: npm publish --access=public
+          command: yarn publish --access=public
 
 workflows:
   version: 2
