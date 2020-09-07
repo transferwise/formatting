@@ -96,7 +96,7 @@ describe('Currency formatting', () => {
   function reloadFormatting() {
     jest.resetModules();
     // eslint-disable-next-line global-require
-    const formatting = require('..');
+    const formatting = require('./index');
     // eslint-disable-next-line prefer-destructuring
     formatAmount = formatting.formatAmount;
     // eslint-disable-next-line prefer-destructuring

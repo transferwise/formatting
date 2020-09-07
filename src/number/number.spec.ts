@@ -213,8 +213,8 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         number = undefined;
       });
 
-      it('should return null', () => {
-        expect(formatNumber(number, locale, precision)).toEqual(null);
+      it('should return empty string', () => {
+        expect(formatNumber(number, locale, precision)).toEqual('');
       });
     });
   });
@@ -266,8 +266,8 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
           number = undefined;
         });
 
-        it('should return null', () => {
-          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual(null);
+        it('should return empty string', () => {
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('');
         });
       });
     });
