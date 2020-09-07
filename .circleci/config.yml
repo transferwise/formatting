@@ -77,7 +77,7 @@ jobs:
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
             git config --global user.name "CircleCI"
-            yarn run release-to-github
+            yarn release-to-github
       - run:
           name: Publish on npm
           command: yarn publish --access=public
