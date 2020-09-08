@@ -1,14 +1,15 @@
 describe('Currency formatting', () => {
-  let formatAmount;
-  let formatMoney;
+  let formatAmount: any;
+  let formatMoney: any;
 
-  let originalAbsoluteFunction;
-  let originalNumberFormat;
+  let originalAbsoluteFunction: any;
+  let originalNumberFormat: any;
 
   beforeEach(() => {
     reloadFormatting(); // As the module saves state, need to reload the module.
     originalAbsoluteFunction = Math.abs;
     originalNumberFormat = Intl.NumberFormat;
+    // @ts-expect-error
     Math.abs = jest.fn(num => (num.isFake ? num : originalAbsoluteFunction(num)));
   });
 
@@ -18,6 +19,7 @@ describe('Currency formatting', () => {
   });
 
   it('uses toFixed to format if Intl.NumberFormat is not supported', () => {
+    // @ts-expect-error
     Intl.NumberFormat = 'THIS_MAKES_isIntlNumberFormatSupported_FALSE';
 
     expect(formatAmount(fakeNumber(), 'jpy')).toBe('fixed for precision 0');
@@ -48,7 +50,7 @@ describe('Currency formatting', () => {
   });
 
   describe('when different levels of precision are given', () => {
-    let currency;
+    let currency: any;
 
     describe('with a currency supporting a precision level of 2 decimals', () => {
       beforeEach(() => {
@@ -94,7 +96,7 @@ describe('Currency formatting', () => {
   function reloadFormatting() {
     jest.resetModules();
     // eslint-disable-next-line global-require
-    const formatting = require('..');
+    const formatting = require('./index');
     // eslint-disable-next-line prefer-destructuring
     formatAmount = formatting.formatAmount;
     // eslint-disable-next-line prefer-destructuring
@@ -105,7 +107,7 @@ describe('Currency formatting', () => {
     return {
       isFake: true,
 
-      toFixed(precision) {
+      toFixed(precision: number) {
         return `fixed for precision ${precision}`;
       },
     };

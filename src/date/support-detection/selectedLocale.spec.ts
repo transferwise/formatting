@@ -1,8 +1,8 @@
 import { isSelectedLocaleSupported } from '.';
 
 describe('Selected locale support detection', () => {
-  let originalSupportedLocalesOf;
-  let supportedLocalesOf;
+  let originalSupportedLocalesOf: any;
+  let supportedLocalesOf: any;
 
   beforeEach(() => {
     originalSupportedLocalesOf = Intl.DateTimeFormat.supportedLocalesOf;

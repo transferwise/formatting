@@ -1,18 +1,22 @@
 {
   "name": "@transferwise/formatting",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "description": "A library for formatting things, like dates, currencies, rates and the like.",
-  "main": "./dist/formatting.js",
+  "source": "src/formatting.ts",
+  "main": "dist/formatting.js",
+  "module": "dist/formatting.module.js",
+  "unpkg": "dist/formatting.umd.js",
   "scripts": {
     "precommit": "lint-staged",
     "fallback-translations": "node src/translations/scripts/build-dev-translations.js",
     "compose-translations": "node src/translations/scripts/build-translations.js",
-    "test": "npm run fallback-translations && npm run check-release-to-github && npm run lint && npm run check-format && jest",
+    "test": "yarn fallback-translations && yarn check-release-to-github && yarn tsc && yarn lint && yarn check-format && jest",
     "test:watch": "jest --watch",
     "lint": "eslint src",
     "check-format": "prettier-eslint \"src/**/*.js\" --list-different",
     "format": "prettier-eslint \"src/**/*.js\" --write",
-    "build": "npm run compose-translations && webpack -p",
+    "build": "yarn compose-translations && microbundle",
+    "dev": "microbundle watch",
     "check-release-to-github": "release-to-github-with-changelog-pre-release-checks",
     "release-to-github": "release-to-github-with-changelog"
   },
@@ -43,12 +47,11 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.4.2",
-    "babel-loader": "^8.0.0-beta.4",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.13",
+    "babel-jest": "^26.3.0",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.0.1",
@@ -56,12 +59,11 @@
     "eslint-plugin-prettier": "^2.6.2",
     "glob": "^7.1.4",
     "husky": "^0.14.3",
-    "jest": "^23.5.0",
+    "jest": "^26.4.2",
     "lint-staged": "^7.2.2",
+    "microbundle": "^0.12.3",
     "prettier": "^1.14.2",
     "prettier-eslint-cli": "^4.7.1",
-    "release-to-github-with-changelog": "^1.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.1.0"
+    "release-to-github-with-changelog": "^1.2.0"
   }
 }

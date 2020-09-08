@@ -1,22 +1,22 @@
 import { NUMBER_OF_RATE_SIGNIFICANT_DIGITS, DEFAULT_LOCALE } from '../defaults';
 import { formatNumberToSignificantDigits } from '../number';
 import formatRateEquation from './formatRateEquation';
-import getRateEquation from './getRateEquation';
+import getRateEquation, { Reference } from './getRateEquation';
 
 export default function(
-  rate,
-  sourceCurrency,
-  targetCurrency,
+  rate: number,
+  sourceCurrency: string,
+  targetCurrency: string,
   {
     reference = 'auto',
     referenceMultiplier,
     significantFigures = NUMBER_OF_RATE_SIGNIFICANT_DIGITS,
-  } = {},
+  }: { reference?: Reference; referenceMultiplier?: number; significantFigures?: number } = {},
   locale = DEFAULT_LOCALE,
 ) {
   const response = {
     suggested: {},
-    formats: {},
+    formats: {} as Record<string, any>,
   };
 
   response.formats.decimal = {

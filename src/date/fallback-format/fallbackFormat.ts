@@ -14,15 +14,19 @@ const SHORT_MONTHS = [
   'Dec',
 ];
 
-function getJoiningCharacter(options) {
+function getJoiningCharacter(options: Intl.DateTimeFormatOptions): string {
   return options.month === 'short' ? ' ' : '/';
 }
 
-function isMonthFirst(options) {
+function isMonthFirst(options: Intl.DateTimeFormatOptions) {
   return options.month === 'short';
 }
 
-function getFormattedMonth(options, isUTC, date) {
+function getFormattedMonth(
+  options: Intl.DateTimeFormatOptions,
+  isUTC: boolean,
+  date: Date,
+): string | number {
   if (options.month === 'short') {
     return SHORT_MONTHS[isUTC ? date.getUTCMonth() : date.getMonth()];
   }
@@ -30,7 +34,7 @@ function getFormattedMonth(options, isUTC, date) {
 }
 
 // Sample outputs: 'Sat, 1/12/2018', '1/12/2018', '12/2018', Sat, 1'
-export function getFallbackFormat(date, options = {}) {
+export function getFallbackFormat(date: Date, options: Intl.DateTimeFormatOptions = {}): string {
   const isUTC = options.timeZone === 'UTC';
 
   const dateParts = [];
@@ -54,6 +58,11 @@ export function getFallbackFormat(date, options = {}) {
   }
   return (
     fallbackDate ||
-    getFallbackFormat(date, { timeZone: options.timeZone, day: true, month: true, year: true })
+    getFallbackFormat(date, {
+      timeZone: options.timeZone,
+      day: 'true',
+      month: 'true',
+      year: 'true',
+    })
   );
 }

@@ -1,11 +1,16 @@
 import config from './config';
 import { DEFAULT_RATE_MULTIPLIER } from '../defaults';
 
+export type Reference = 'auto' | 'source' | 'target';
+
 export default function(
-  rate,
-  sourceCurrency,
-  targetCurrency,
-  { reference = 'auto', referenceMultiplier } = {},
+  rate: number,
+  sourceCurrency: string,
+  targetCurrency: string,
+  {
+    reference = 'auto',
+    referenceMultiplier,
+  }: { reference?: Reference; referenceMultiplier?: number } = {},
 ) {
   validateParameters();
 
@@ -26,7 +31,7 @@ export default function(
     rhsValue: rate * getMultiplier(referenceMultiplier, sourceCurrency),
   };
 
-  function validateParameters() {
+  function validateParameters(): void {
     if (!rate) throw new Error(`rate parameter is mandatory (got ${rate} instead).`);
     if (!sourceCurrency)
       throw new Error(`sourceCurrency parameter is mandatory (got ${sourceCurrency} instead).`);
@@ -41,17 +46,20 @@ export default function(
   }
 }
 
-function shouldInvertEquation(referenceConfig, sourceCurrency) {
+function shouldInvertEquation(referenceConfig: Reference, sourceCurrency: string): boolean {
   if (referenceConfig === 'source') return false;
   if (referenceConfig === 'target') return true;
   if (['auto', undefined, null].indexOf(referenceConfig) > -1)
-    return (config[sourceCurrency] || {}).hasInversionEnabled;
+    return !!(config[sourceCurrency] || {}).hasInversionEnabled;
   throw new Error(
     `Unrecognized reference config value: ${referenceConfig} (valid values are auto, source, target).`,
   );
 }
 
-function getMultiplier(referenceMultiplierOverride, lhsCurrency) {
+function getMultiplier(
+  referenceMultiplierOverride: number | undefined,
+  lhsCurrency: string,
+): number {
   return (
     referenceMultiplierOverride ||
     (config[lhsCurrency] || {}).multiplierForEquation ||

@@ -1,11 +1,12 @@
 import { isIntlSupported } from '.';
 
 describe('Intl support detection', () => {
-  let originalDateTimeFormat;
+  let originalDateTimeFormat: any;
   const format = jest.fn().mockReturnValue('01/12/2018');
 
   beforeEach(() => {
     originalDateTimeFormat = Intl.DateTimeFormat;
+    // @ts-expect-error
     Intl.DateTimeFormat = jest.fn().mockImplementation(() => ({ format }));
   });
 

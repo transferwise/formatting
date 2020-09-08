@@ -1,3 +1,6 @@
+# v2.5.0
+## Add TypeScript declarations
+
 # v2.4.3
 ## Adds UGX and KES as currencies with no fractional parts
 

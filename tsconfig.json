@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "strict": true
+  }
+}

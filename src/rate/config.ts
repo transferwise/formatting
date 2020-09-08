@@ -17,4 +17,4 @@ export default {
   RON: {
     hasInversionEnabled: true,
   },
-};
+} as Record<string, { hasInversionEnabled?: boolean; multiplierForEquation?: number }>;

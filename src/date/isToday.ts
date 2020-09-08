@@ -1,4 +1,4 @@
-export default date => {
+export default (date: Date): boolean => {
   const today = new Date(Date.now());
   return (
     date.getDate() === today.getDate() &&

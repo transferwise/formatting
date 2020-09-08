@@ -16,15 +16,16 @@ describe('Rate formatting with no locale specified', () => {
 });
 
 describe('when a locale is set', () => {
-  let originalNumberFormat;
-  let format;
-  let locale;
+  let originalNumberFormat: any;
+  let format: any;
+  let locale: any;
 
   beforeAll(() => {
     locale = 'some-LOCALE';
 
     originalNumberFormat = Intl.NumberFormat;
-    format = number => jest.fn().mockReturnValue(`${number}Localized`)();
+    format = (number: number) => jest.fn().mockReturnValue(`${number}Localized`)();
+    // @ts-expect-error
     Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
   });
 

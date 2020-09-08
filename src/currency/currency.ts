@@ -37,16 +37,16 @@ const DEFAULT_CURRENCY_DECIMALS = 2;
 function getCurrencyDecimals(currency = '') {
   const upperCaseCurrency = currency.toUpperCase();
   if (Object.prototype.hasOwnProperty.call(currencyDecimals, upperCaseCurrency)) {
-    return currencyDecimals[upperCaseCurrency];
+    return currencyDecimals[upperCaseCurrency as keyof typeof currencyDecimals];
   }
   return DEFAULT_CURRENCY_DECIMALS;
 }
 
-function amountHasNoDecimals(amount) {
+function amountHasNoDecimals(amount: number): boolean {
   return amount % 1 === 0;
 }
 
-function getPrecision(amount, currencyCode, alwaysShowDecimals) {
+function getPrecision(amount: number, currencyCode: string, alwaysShowDecimals: boolean): number {
   if (amountHasNoDecimals(amount) && !alwaysShowDecimals) {
     return 0;
   }
@@ -55,11 +55,11 @@ function getPrecision(amount, currencyCode, alwaysShowDecimals) {
 }
 
 export function formatAmount(
-  amount,
-  currencyCode,
+  amount: number,
+  currencyCode: string,
   locale = DEFAULT_LOCALE,
   options = { alwaysShowDecimals: false },
-) {
+): string {
   const availablePrecision = getPrecision(amount, currencyCode, options.alwaysShowDecimals);
   const isNegative = amount < 0;
   const absoluteAmount = Math.abs(amount);
@@ -70,8 +70,8 @@ export function formatAmount(
 }
 
 export function formatMoney(
-  amount,
-  currencyCode,
+  amount: number,
+  currencyCode: string,
   locale = DEFAULT_LOCALE,
   options = { alwaysShowDecimals: false },
 ) {

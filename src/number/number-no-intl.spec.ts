@@ -3,11 +3,12 @@ import { formatNumber, formatNumberToSignificantDigits } from './number';
 import * as intl from './feature-detection/intl';
 
 describe('Number formatting, when Intl.NumberFormat is not supported', () => {
-  let number = 123456;
-  let locale = DEFAULT_LOCALE;
-  let precision;
+  let number = 123456 as any;
+  let locale = DEFAULT_LOCALE as any;
+  let precision: any;
 
   beforeAll(() => {
+    // @ts-expect-error
     intl.isIntlNumberFormatSupported = jest.fn().mockReturnValue(false);
   });
 

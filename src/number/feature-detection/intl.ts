@@ -1,11 +1,11 @@
-let isSupported;
+let isSupported: boolean | undefined;
 
 /**
  * Checks if Intl.NumberFormat is supported for a specific locale
  * @param {String} locale
  * @returns {Boolean}
  */
-export function isIntlNumberFormatSupported(locale) {
+export function isIntlNumberFormatSupported(locale: string): boolean {
   if (isSupported === undefined) {
     isSupported =
       typeof Intl === 'object' &&

@@ -2,9 +2,9 @@ import { DEFAULT_LOCALE } from '../defaults';
 import { formatNumber, formatNumberToSignificantDigits } from './number';
 
 describe('Number formatting, when Intl.NumberFormat is supported', () => {
-  let number = 123456;
+  let number = 123456 as any;
   let locale = DEFAULT_LOCALE;
-  let precision;
+  let precision: any;
 
   describe('when no locale supplied', () => {
     it(`should use the ${DEFAULT_LOCALE}`, () => {
@@ -77,14 +77,15 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
   });
 
   describe('when an invalid locale supplied', () => {
-    let originalNumberFormat;
-    let format;
+    let originalNumberFormat: any;
+    let format: any;
 
     beforeAll(() => {
       locale = 'en_US';
 
       originalNumberFormat = Intl.NumberFormat;
       format = jest.fn().mockReturnValue('123456');
+      // @ts-expect-error
       Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
     });
 
@@ -106,14 +107,15 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
   });
 
   describe('when es-ES locale supplied', () => {
-    let originalNumberFormat;
-    let format;
+    let originalNumberFormat: any;
+    let format: any;
 
     beforeAll(() => {
       locale = 'es-ES';
 
       originalNumberFormat = Intl.NumberFormat;
       format = jest.fn().mockReturnValue('123456');
+      // @ts-expect-error
       Intl.NumberFormat = jest.fn().mockImplementation(() => ({ format }));
     });
 
@@ -211,8 +213,8 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
         number = undefined;
       });
 
-      it('should return null', () => {
-        expect(formatNumber(number, locale, precision)).toEqual(null);
+      it('should return empty string', () => {
+        expect(formatNumber(number, locale, precision)).toEqual('');
       });
     });
   });
@@ -264,8 +266,8 @@ describe('Number formatting, when Intl.NumberFormat is supported', () => {
           number = undefined;
         });
 
-        it('should return null', () => {
-          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual(null);
+        it('should return empty string', () => {
+          expect(formatNumberToSignificantDigits(number, locale, precision)).toEqual('');
         });
       });
     });

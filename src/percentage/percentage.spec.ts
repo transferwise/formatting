@@ -1,4 +1,4 @@
-import { formatPercentage } from '..';
+import { formatPercentage } from './percentage';
 
 describe('Percentage formatting', () => {
   it('formats percentage without decimals', () => {
