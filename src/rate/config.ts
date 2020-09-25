@@ -9,7 +9,7 @@ export default {
     hasInversionEnabled: true,
   },
   IDR: {
-    multiplierForEquation: 10000,
+    hasInversionEnabled: true
   },
   HUF: {
     hasInversionEnabled: true,
