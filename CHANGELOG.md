@@ -1,3 +1,6 @@
+# v2.6.0
+## Inverting Rate Format for IDR
+
 # v2.5.0
 ## Add TypeScript declarations
 
