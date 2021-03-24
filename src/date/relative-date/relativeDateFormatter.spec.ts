@@ -80,7 +80,7 @@ describe('relative date formatting', () => {
         isIntlSupported.mockReturnValue(true);
 
         // expect:
-        expect(formatRelativeDate(nowPlusDuration('12:00:00.001'), 'et')).toEqual('by Jan 1');
+        expect(formatRelativeDate(nowPlusDuration('12:00:00.001'), 'et')).toEqual('by 1. jaan');
       });
 
       it('without Intl support', () => {
@@ -99,7 +99,7 @@ describe('relative date formatting', () => {
       isIntlSupported.mockReturnValue(true);
 
       // expect:
-      expect(formatRelativeDate(new Date('2019-01-02T00:00:00.000Z'), 'et')).toEqual('by Jan 2');
+      expect(formatRelativeDate(new Date('2019-01-02T00:00:00.000Z'), 'et')).toEqual('by 2. jaan');
     });
   });
 });
