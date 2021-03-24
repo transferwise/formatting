@@ -36,8 +36,8 @@ jobs:
           name: Pull translations
           command: crowdin pull -b ${CIRCLE_BRANCH}
       - run:
-          name: List files
-          command: ls -l src/translations
+          name: View translations
+          command: find src/translations/*.json -type f -print -exec cat {} \;
       - persist_to_workspace:
           root: .
           paths:
