@@ -1,3 +1,6 @@
+# v2.7.0
+## Add Ukrainian translations
+
 # v2.6.0
 ## Inverting Rate Format for IDR
 
