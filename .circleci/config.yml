@@ -97,7 +97,7 @@ workflows:
           requires:
             - build
       - release:
-          context: frontend-publish
+          context: frontend-deploy-library
           requires:
             - test
           filters:
